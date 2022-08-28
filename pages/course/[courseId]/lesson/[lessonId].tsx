@@ -3,9 +3,9 @@ import React from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
 
 import { ParsedUrlQuery } from 'querystring'
+import Ide from '../../../../components/ide/ide'
 
 
 type Props = {
@@ -20,17 +20,13 @@ export default function Lesson(props: Props) {
             <title>{"Step - "+props.id}</title>
         </Head>
         <h1>We are in Step {props.name}</h1>
-        <Image
-        src="/images/profile.jpg"
-        width={500}
-        height={500}
-        alt="My image"
-        />
+        <Ide/>
         <Link href="/">Go Back</Link>
     </div>
   )
 }
 
+//Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
     const res = await fetch("https://pokeapi.co/api/v2/pokemon-species/")
     const {count} = await res.json()
@@ -39,7 +35,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
     const paths = ids.map((id) => {
         return {
-            params: { courseId:'1',id },
+            params: { courseId:'1', lessonId:id },
         }
     })
 
@@ -50,13 +46,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 interface Context extends ParsedUrlQuery{
-    id: string
+    courseId: string
+    lessonId: string
 } 
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    const { id } = context.params as Context
+    const { lessonId } = context.params as Context
 
-    const res = await fetch("https://pokeapi.co/api/v2/pokemon-species/"+id)
+    const res = await fetch("https://pokeapi.co/api/v2/pokemon-species/"+lessonId)
     const pokemon = await res.json()
 
     return {

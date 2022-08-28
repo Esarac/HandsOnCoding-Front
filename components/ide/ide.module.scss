@@ -1,0 +1,14 @@
+.block{
+    height: 25vh;
+    width: 50vw;
+}
+
+.editor{
+    @extend .block;
+}
+
+.console {
+    @extend .block;
+    background-color: darkblue;
+    color: white;
+}
