@@ -1,24 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
-import Head from 'next/head'
-import Script from 'next/script'
-
-import style from './ide.module.scss'
 import cn from 'classnames'
+import style from './ide.module.scss'
 
-type Log = {
+type LogItem = {
     type: string
     content: string
 }
 
 type Props = {
-    output: string
+
 }
 
-export default function Console(props: Props) {
+export type ConsoleHandle = {
+    addLogItems: (logItems: LogItem[]) => void;
+}
+
+function Console(_props:Props, ref?:Ref<ConsoleHandle>){
     //States
     const [input, setInput] = useState<string>('')
-    const [log, setLog] = useState<Log[]>([])
+    const [log, setLog] = useState<LogItem[]>([])
 
     //References
     const inputRef = useRef<HTMLInputElement>(null)
@@ -33,31 +34,40 @@ export default function Console(props: Props) {
     //Functions
     const submitCommand = () => {
         if(input.trim() === '')
-            setLog([...log, {type:'input', content:' '}])
+            addLogItems([{type:'input', content:' '}])
         else if(input==='clear')
-            clearConsole()
+            clearLog()
         else
-            setLog([...log, {type:'input', content:input},{type:'output', content:'command not found'}])
+            addLogItems([{type:'input', content:input},{type:'output', content:'command not found'}])
+    }
+
+    const addLogItems = (logItems: LogItem[]) => {
+        setLog([...log, ...logItems])
         setInput('')
     }
 
-    const clearConsole = () => {
+    const clearLog = () => {
         setLog([])
+        setInput('')
     }
 
     //JSX Elements
-    const listOutputs = log.map((value)=>{
+    const listOutputs = log.map((value, index)=>{
         return(
             <p 
             className={cn({
                 [style.logInput]: value.type === 'input',
                 [style.logOutput]: value.type === 'output',
             })}
+            key={index}
             >
                 {value.content}
             </p>
         )
     })
+
+    //Provided Methods
+    useImperativeHandle(ref, () => ({addLogItems}));
 
     return (
         <div
@@ -81,3 +91,5 @@ export default function Console(props: Props) {
         </div>
     )
 }
+
+export default forwardRef<ConsoleHandle, Props>(Console);

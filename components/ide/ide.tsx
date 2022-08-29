@@ -1,19 +1,54 @@
-import React, { createRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-import Editor from './editor'
-import Console from './console'
+import Editor from '@monaco-editor/react'
 
-import styles from './ide.module.scss'
+import Console, { ConsoleHandle } from './console'
 
-export default function Ide() {
-    const [output, setOutput] = useState('> johan')
+import { postOutput } from '../../services/fetchCompiler'
+
+import style from './ide.module.scss'
+
+type Props = {
+    language: string
+    value: string
+}
+
+export default function Ide(props: Props) {
+    //States
+    const [code, setCode] = useState(props.value)
+
+    //References
+    const consoleRef = useRef<ConsoleHandle>(null)
 
     return (
-        <div className={styles.ide}>
-            <Editor template='print("hello!")'
-                onRun={(v: string)=>setOutput('>    '+v)}
-            />
-            <Console output={output}/>
+        <div className={style.ide}>
+            <div className={style.buttonBar}>
+                <button
+                onClick={(e)=>{
+                    postOutput(props.language, code)
+                    .then((output)=>{
+                        consoleRef.current?.addLogItems([{type:'output',content:output}])
+                    })
+                    .catch((e)=>console.log(e))
+                }}>
+                    RUN
+                </button>
+                <button>
+                    SAVE
+                </button>
+            </div>
+            <div className={style.editor}>
+                <Editor
+                    defaultValue=""
+                    language={props.language}
+                    theme="vs-dark"
+                    value={code}
+                    onChange={(v, e)=>{
+                        setCode(v as string)
+                    }}
+                />
+            </div>
+            <Console ref={consoleRef}/>
         </div>
     )
 }

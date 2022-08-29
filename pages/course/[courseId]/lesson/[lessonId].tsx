@@ -20,8 +20,10 @@ export default function Lesson(props: Props) {
                 <title>{"Step - " + props.id}</title>
             </Head>
             <h1>We are in Step {props.name}</h1>
-            <Ide />
             <Link href="/">Go Back</Link>
+            <div style={{width:'100%',height:'75vh'}}>
+                <Ide language='python' value={'a=2 \nb=3 \nprint(a+b)'}/>
+            </div>
         </div>
     )
 }

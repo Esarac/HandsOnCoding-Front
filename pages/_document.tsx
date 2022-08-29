@@ -5,7 +5,6 @@ export default function Document() {
   return (
     <Html lang='es'>
       <Head>
-        {/* <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" /> PyScript */}
       </Head>
       <body>
         <Main />
