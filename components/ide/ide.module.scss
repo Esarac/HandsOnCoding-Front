@@ -1,6 +1,15 @@
-.block{
-    height: 25vh;
+$background-color: #1E1E1E;
+$text-color: #D4D4D4;
+
+.ide{
+    height:50vh;
     width: 50vw;
+    background-color: $text-color;
+}
+
+.block{
+    height: 55%;
+    width: 100%;
 }
 
 .editor{
@@ -9,6 +18,66 @@
 
 .console {
     @extend .block;
-    background-color: darkblue;
-    color: white;
+    position: relative;
+
+    background-color: $background-color;
+    color: $text-color;
+
+    border-top: 1px solid $text-color;
+    padding-left: 64px;
+    
+    // Scroll-bar
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    &::-webkit-scrollbar{
+        width: 15px;
+        background: $background-color;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgb($text-color, 0.2);
+    }
+
+    // All
+    & *{
+        color: $text-color;
+        font-size: small;
+
+        &:before{
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            left: -35px;
+        }
+
+        &.logInput:before{
+            content: '$';
+        }
+        
+        &.logOutput:before{
+            content: '#'
+        }
+    }
+
+    // Input
+    .inputContainer{
+        position: relative;
+    }
+    
+    & input{
+        padding-bottom: 10px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        width: 100%;
+    }
+
+    // Paragraphs
+    & p{
+        margin-bottom: 0px;
+        margin-top: 0px;
+        position: relative;
+        word-wrap: break-word;
+        white-space: pre;
+    }
 }

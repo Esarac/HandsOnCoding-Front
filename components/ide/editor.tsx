@@ -13,7 +13,7 @@ export default function Editor(props: Props) {
     const [code, setCode] = useState(props.template)
 
     return (
-        <div>
+        <>
             <button onClick={(e)=>props.onRun(code)}>RUN</button>
             <div className={style.editor}>
                 <MonacoEditor
@@ -26,6 +26,6 @@ export default function Editor(props: Props) {
                     }}
                 />
             </div>
-        </div>
+        </>
     )
 }
