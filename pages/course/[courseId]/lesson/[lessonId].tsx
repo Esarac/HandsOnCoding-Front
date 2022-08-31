@@ -6,6 +6,8 @@ import Link from 'next/link'
 
 import { ParsedUrlQuery } from 'querystring'
 import Ide from '../../../../components/ide/ide'
+import CustomTab from '../../../../components/tab/customTab'
+import JSXStyle from 'styled-jsx/style'
 
 //Component
 type Props = {
@@ -14,17 +16,57 @@ type Props = {
 };
 
 export default function Lesson(props: Props) {
-    return (
-        <div>
-            <Head>
-                <title>{"Step - " + props.id}</title>
-            </Head>
-            <h1>We are in Step {props.name}</h1>
-            <Link href="/">Go Back</Link>
-            <div style={{width:'100%',height:'75vh'}}>
-                <Ide language='python' value={'a=2 \nb=3 \nprint(a+b)'}/>
+
+    const tab1 = {
+        name: 'Información',
+        content: (
+            <div>
+                <div style={{ width: '100%', height: '75vh' }}>
+                    <Ide language='python' value={'a=2 \nb=3 \nprint(a+b)'} />
+                </div>
             </div>
-        </div>
+        )
+    }
+
+    const tab2 = {
+        name: 'Plantilla',
+        content: (
+            <div>
+                <h1>Tab2</h1>
+            </div>
+        )
+    }
+
+    const tab3 = {
+        name: 'Solución',
+        content: (
+            <div>
+                <h1>Tab3</h1>
+            </div>
+        )
+    }
+
+    const tab4 = {
+        name: 'Test',
+        content: (
+            <div>
+                <h1>Tab4</h1>
+            </div>
+        )
+    }
+
+    return (
+        <CustomTab tabs={[tab1, tab2, tab3, tab4]}
+            header={
+                < div >
+                    <Head>
+                        <title>{"Step - " + props.id}</title>
+                    </Head>
+                    <h1>We are in Step {props.name}</h1>
+                    <Link href="/">Go Back</Link>
+                </div >
+            }
+        ></CustomTab>
     )
 }
 
