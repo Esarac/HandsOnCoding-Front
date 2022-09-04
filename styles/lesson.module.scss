@@ -1,0 +1,17 @@
+$background-color: #1E1E1E;
+$text-color: #D4D4D4;
+
+.button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    width: 80px;
+
+    background-color: $background-color;
+    color:$text-color;
+
+    border: none;
+    border: 1px solid $text-color;
+}

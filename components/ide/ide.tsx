@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import Editor from '@monaco-editor/react'
 
@@ -11,11 +11,17 @@ import style from './ide.module.scss'
 type Props = {
     language: string
     value: string
+    onChange?: (data: string) => void;
 }
 
 export default function Ide(props: Props) {
     //States
     const [code, setCode] = useState(props.value)
+
+    useEffect(() => {
+        if(props.onChange)
+            props.onChange(code)
+    }, [code]);
 
     //References
     const consoleRef = useRef<ConsoleHandle>(null)
@@ -31,10 +37,7 @@ export default function Ide(props: Props) {
                     })
                     .catch((e)=>console.log(e))
                 }}>
-                    RUN
-                </button>
-                <button>
-                    SAVE
+                    Correr
                 </button>
             </div>
             <div className={style.editor}>

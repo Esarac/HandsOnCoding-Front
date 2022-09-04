@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.5",
@@ -20,6 +21,7 @@
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "cypress": "^10.7.0",
     "eslint": "8.23.0",
     "eslint-config-next": "12.2.5",
     "sass": "^1.54.5",
