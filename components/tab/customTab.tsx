@@ -25,7 +25,7 @@ export default function CustomTab(props: Props) {
                 ))}
             </TabList>
             {props.tabs.map((child) => (
-                <TabPanel>{child.content}</TabPanel>
+                <TabPanel forceRender={true}>{child.content}</TabPanel>
             ))}
         </Tabs>
     )
