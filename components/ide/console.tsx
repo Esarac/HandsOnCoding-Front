@@ -54,7 +54,8 @@ function Console(_props:Props, ref?:Ref<ConsoleHandle>){
     //JSX Elements
     const listOutputs = log.map((value, index)=>{
         return(
-            <p 
+            <p
+            data-cy="log"
             className={cn({
                 [style.logInput]: value.type === 'input',
                 [style.logOutput]: value.type === 'output',

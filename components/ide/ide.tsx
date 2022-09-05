@@ -30,6 +30,7 @@ export default function Ide(props: Props) {
         <div className={style.ide}>
             <div className={style.buttonBar}>
                 <button
+                data-cy="run"
                 onClick={(e)=>{
                     postOutput(props.language, code)
                     .then((output)=>{
@@ -37,7 +38,7 @@ export default function Ide(props: Props) {
                     })
                     .catch((e)=>console.log(e))
                 }}>
-                    Correr
+                    Run
                 </button>
             </div>
             <div className={style.editor}>
