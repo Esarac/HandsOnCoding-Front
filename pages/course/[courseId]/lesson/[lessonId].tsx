@@ -8,11 +8,10 @@ import { ParsedUrlQuery } from 'querystring'
 import Ide from '../../../../components/ide/ide'
 import CustomTab from '../../../../components/tab/customTab'
 import { Step, StepWithId, File } from '../../../../models/models'
-import { putStep } from '../../../../services/fetchStep'
+import { putStep, getStep, getSteps } from '../../../../services/fetchStep'
 
 
 import styles from '../../../../styles/lesson.module.scss'
-import { putSolution, putTemplate } from '../../../../services/fetchFile'
 
 //Component
 interface Props extends StepWithId{
@@ -24,16 +23,16 @@ export default function Lesson(props: Props) {
     const [codeSolution, setCodeSolution] = useState<string>(props.solution?.content as string)
 
     const tab1 = {
-        name: 'Información',
+        name: 'Description',
         content: (
             <div>
-                <h1>Información</h1>
+                <h1>Description</h1>
             </div>
         )
     }
 
     const tab2 = {
-        name: 'Plantilla',
+        name: 'Template',
         content: (
             <div style={{ width: '100%', height: '75vh' }}>
                 <Ide onChange={setCodeTemplate} language='python' value={props.template?.content as string} />
@@ -42,7 +41,7 @@ export default function Lesson(props: Props) {
     }
 
     const tab3 = {
-        name: 'Solución',
+        name: 'Solution',
         content: (
             <div style={{ width: '100%', height: '75vh' }}>
                 <Ide
@@ -74,19 +73,19 @@ export default function Lesson(props: Props) {
                     <div>
                         <div className={styles.button}>
                             <Link href="/">
-                                Atras
+                                Go back
                             </Link>
                         </div>
                         <button
                         className={styles.button}
                         onClick={(e)=>{
                             const template: File={
-                                name:props.template?.name as string,
+                                name: (typeof props.template?.name === 'undefined') ? 'main.py' : props.template?.name,
                                 content: codeTemplate
                             }
 
                             const solution: File={
-                                name:props.solution?.name as string,
+                                name: (typeof props.solution?.name === 'undefined') ? 'main.py' : props.solution?.name,
                                 content: codeSolution
                             }
 
@@ -95,7 +94,7 @@ export default function Lesson(props: Props) {
                             .catch((e)=>console.log(e))
                         }}
                         >
-                            Guardar
+                            Save
                         </button>
                     </div>
                 </div >
@@ -106,8 +105,7 @@ export default function Lesson(props: Props) {
 
 //Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
-    const response = await fetch("http://localhost:8080/api/v1/steps/")
-    const steps: StepWithId[] = await response.json()
+    const steps: StepWithId[] = await getSteps();
 
     //Id for each pokemon
     const ids: string[] = steps.map((step)=>{return step.id})
@@ -133,8 +131,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //Es con lesson, pero por ahora lo hacemos con step
     const { lessonId } = context.params as Context
 
-    const res = await fetch("http://localhost:8080/api/v1/steps/" + lessonId)
-    const step = await res.json()
+    const step = await getStep(lessonId) as StepWithId
 
     return {
         props: step

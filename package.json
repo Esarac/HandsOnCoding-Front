@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open --browser edge"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.5",

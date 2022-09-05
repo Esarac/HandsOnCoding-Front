@@ -1,7 +1,7 @@
-import { Step } from "../models/models";
+import { Step, StepWithId } from "../models/models";
 
 export const putStep = async(id:string, step: Step) => {
-    let data = '';
+    let data: StepWithId | null = null;
 
     try{
         const response = await fetch('http://localhost:8080/api/v1/steps/'+id,
@@ -14,6 +14,34 @@ export const putStep = async(id:string, step: Step) => {
             body: JSON.stringify(step),
         })
         
+        data = await response.json()
+    }
+    catch(e){
+        console.log(e)
+    }
+
+    return data;
+}
+
+export const getStep = async(id:string) => {
+    let data: StepWithId | null = null;
+
+    try{
+        const response = await fetch("http://localhost:8080/api/v1/steps/" + id)
+        data = await response.json()
+    }
+    catch(e){
+        console.log(e)
+    }
+
+    return data;
+}
+
+export const getSteps = async() => {
+    let data: StepWithId[] = [];
+
+    try{
+        const response = await fetch("http://localhost:8080/api/v1/steps/")
         data = await response.json()
     }
     catch(e){
