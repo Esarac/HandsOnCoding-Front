@@ -1,51 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# HandsOnCoding (Front-End)
+
+This is the website for the HandsOnCoding project, an open-source MOOC (Massive Open Online Courses) for multiple programming languages.
+
+### Build With
+
+* ![Node](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+* ![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+* ![NextJs](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+* ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+* ![Sass](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
+* ![Cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+In order to run this project you should install [Node](https://nodejs.org/en/download/) in your computer.
+
+You also need to be running the other two projects (see the installation process inside each project):
+* [HandsOnCoding Business Logic (Back-End)](https://github.com/Esarac/HandsOnCoding-Back)
+* [HandsOnCoding Compiler (Back-End)](https://github.com/mavaldot/pdg-compiler)
+
+### Installation
+
+1. Clone the repository
+    ```bash
+    git clone https://github.com/Esarac/HandsOnCoding-Front.git
+    ```
+2. Go inside the project folder
+   ```bash
+   cd HandsOnCoding-Front
+   ```
+3. Install npm packages
+   ```bash
+   npm i
+   ```
+
+## Usage
+
+### Configuration
+
+This project follows the [Next.js](https://nextjs.org/docs) structure.
+
+Some important folders are:
+| Folder     | Description                                            |
+|------------|--------------------------------------------------------|
+| components | React components that are going to be used in the app. |
+| models     | Typescript object definitions that are commonly used.  |
+| services   | Fetching functions.                                    |
+
+### Start
+
+Run the development server with the following command:
 ```bash
 npm run dev
 # or
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Cypress (Test)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+[Cypress](https://www.cypress.io/) is the new standard in front-end testing that every developer and QA engineer needs.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Cypress
 To run the E2E tests, use the following command:
-
 ```bash
 npm run cy:run
-# or
-yarn cy:run
 ```
 
-If you want to show the Cypress interface, run this command instead:
-
+To run the E2E test with the Cypress Launchpad, run this command instead:
 ```bash
 npm run cy:open
-# or
-yarn cy:open
 ```
+
+Take into account that the development server should be running at http://localhost:3000 in order for the test to work.
+
+
+## Related Projects
+
+* [HandsOnCoding Business Logic (Back-End)](https://github.com/Esarac/HandsOnCoding-Back)
+* [HandsOnCoding Compiler (Back-End)](https://github.com/mavaldot/pdg-compiler)
+
+## Contact Information
+
+Esteban Ariza Acosta (Esarac)
+
+[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Esarac)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/estebanarizaacosta/)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:acosta57esteban@gmail.com)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/esaracgp/)
