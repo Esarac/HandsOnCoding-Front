@@ -81,8 +81,8 @@ Take into account that the development server should be running at http://localh
 * [HandsOnCoding Compiler (Back-End)](https://github.com/mavaldot/pdg-compiler)
 
 ## Contact Information
-
-Esteban Ariza Acosta (Esarac)
+ 
+### ![Quality](https://images.weserv.nl/?url=avatars.githubusercontent.com/u/48232743?v=4&h=50&w=50&fit=cover&mask=circle&maxage=7d) Esteban Ariza Acosta (Esarac)
 
 [![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Esarac)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/estebanarizaacosta/)
