@@ -83,6 +83,7 @@ function Console(_props:Props, ref?:Ref<ConsoleHandle>){
             {listOutputs}
             <div className={style.inputContainer+' '+style.logInput}>
                 <input
+                disabled //Until the "input()" problem persists
                 ref={inputRef}
                 type="text"
                 value={input}
