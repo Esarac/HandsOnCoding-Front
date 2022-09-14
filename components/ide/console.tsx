@@ -16,6 +16,10 @@ export type ConsoleHandle = {
     addLogItems: (logItems: LogItem[]) => void;
 }
 
+
+/**
+ * This component is a console that displays outputs, receive inputs, and allows running commands
+ */
 function Console(_props:Props, ref?:Ref<ConsoleHandle>){
     //States
     const [input, setInput] = useState<string>('')

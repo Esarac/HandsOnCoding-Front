@@ -9,11 +9,20 @@ import { postOutput } from '../../services/fetchCompiler'
 import style from './ide.module.scss'
 
 type Props = {
+    /**
+     * @param {string} - A string specifying the programming language that is going to be compiled
+     */
     language: string
+    /**
+     * @param {string} - The code written by the user
+     */
     value: string
     onChange?: (data: string) => void;
 }
 
+/**
+ * This component uses Monaco Editor to allow the users to write code and executed it. It includes a console to display outputs and allows inputs
+ */
 export default function Ide(props: Props) {
     //States
     const [code, setCode] = useState(props.value)
