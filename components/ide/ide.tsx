@@ -4,7 +4,7 @@ import Editor from '@monaco-editor/react'
 
 import Console, { ConsoleHandle } from './console'
 
-import { postOutput } from '../../services/fetchCompiler'
+import { postCode } from '../../services/fetchCompiler'
 
 import style from './ide.module.scss'
 
@@ -41,9 +41,10 @@ export default function Ide(props: Props) {
                 <button
                 data-cy="run"
                 onClick={(e)=>{
-                    postOutput(props.language, code)
-                    .then((output)=>{
-                        consoleRef.current?.addLogItems([{type:'output',content:output}])
+                    postCode(props.language, code)
+                    .then((response)=>{
+                        const content = response.data.out
+                        consoleRef.current?.addLogItems([{type:'output',content}])
                     })
                     .catch((e)=>console.log(e))
                 }}>

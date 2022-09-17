@@ -1,52 +1,36 @@
-import { Step, StepWithId } from "../models/models";
+import axios from 'axios'
+import { Step } from "../models/models";
 
-export const putStep = async(id:string, step: Step) => {
-    let data: StepWithId | null = null;
-
-    try{
-        const response = await fetch('http://localhost:8080/api/v1/steps/'+id,
-        {
-            method: 'PUT',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(step),
-        })
-        
-        data = await response.json()
-    }
-    catch(e){
-        console.log(e)
-    }
-
-    return data;
+export interface StepResponse extends Step {
+    id: string
 }
 
-export const getStep = async(id:string) => {
-    let data: StepWithId | null = null;
+export const getStep = async (id: string) => {
+    const { data, status } = await axios.get<StepResponse>('http://localhost:8080/api/v1/steps/' + id)
 
-    try{
-        const response = await fetch("http://localhost:8080/api/v1/steps/" + id)
-        data = await response.json()
-    }
-    catch(e){
-        console.log(e)
-    }
-
-    return data;
+    return { data, status }
 }
 
-export const getSteps = async() => {
-    let data: StepWithId[] = [];
+export const getSteps = async () => {
+    const { data, status } = await axios.get<StepResponse[]>('http://localhost:8080/api/v1/steps/')
 
-    try{
-        const response = await fetch("http://localhost:8080/api/v1/steps/")
-        data = await response.json()
-    }
-    catch(e){
-        console.log(e)
-    }
+    return { data, status }
+}
 
-    return data;
+export const postStep = async (step: Step) => {
+    const { data, status } = await axios.post<StepResponse>('http://localhost:8080/api/v1/steps/', step)
+
+    return { data, status }
+}
+
+export const putStep = async (id: string, step: Step) => {
+    const { data, status } = await axios.put<StepResponse>('http://localhost:8080/api/v1/steps/' + id, step)
+
+    return { data, status }
+}
+
+export const deleteStep = async (id: string) => {
+    const { data, status } = await axios.delete<StepResponse>('http://localhost:8080/api/v1/steps/' + id)
+
+    return { data, status }
 }

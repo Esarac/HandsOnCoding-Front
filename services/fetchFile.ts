@@ -1,47 +1,23 @@
+import axios from 'axios'
 import { File } from "../models/models";
 
+//Deprecated
+export interface FileResponse extends File{
+    id: string
+}
+
 export const putTemplate = async(id:string, template: File) => {
-    let data = '';
+    const {data, status} = await axios.put<FileResponse>('http://localhost:8080/api/v1/templates/'+id,
+        template
+    )
 
-    try{
-        const response = await fetch('http://localhost:8080/api/v1/templates/'+id,
-        {
-            method: 'PUT',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({content:template.content}),
-        })
-        
-        data = await response.json()
-    }
-    catch(e){
-        console.log(e)
-    }
-
-    return data;
+    return {data, status}
 }
 
 export const putSolution = async(id:string, solution: File) => {
-    let data = '';
+    const {data, status} = await axios.put<FileResponse>('http://localhost:8080/api/v1/solutions/'+id,
+        solution
+    )
 
-    try{
-        const response = await fetch('http://localhost:8080/api/v1/solutions/'+id,
-        {
-            method: 'PUT',
-            headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({content:solution.content}),
-        })
-        
-        data = await response.json()
-    }
-    catch(e){
-        console.log(e)
-    }
-
-    return data;
+    return {data, status}
 }

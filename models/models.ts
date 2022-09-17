@@ -1,7 +1,3 @@
-export interface StepWithId extends Step{
-    id: string
-}
-
 export interface Step {
     description: string
     template?: File

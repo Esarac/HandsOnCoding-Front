@@ -7,14 +7,14 @@ import { ParsedUrlQuery } from 'querystring'
 
 import Ide from '../../../../components/ide/ide'
 import CustomTab from '../../../../components/tab/customTab'
-import { Step, StepWithId, File } from '../../../../models/models'
-import { putStep, getStep, getSteps } from '../../../../services/fetchStep'
+import { Step, File } from '../../../../models/models'
+import { StepResponse, putStep, getStep, getSteps } from '../../../../services/fetchStep'
 
 
 import styles from '../../../../styles/lesson.module.scss'
 
 //Component
-interface Props extends StepWithId{
+interface Props extends StepResponse{
     
 };
 
@@ -105,7 +105,7 @@ export default function Lesson(props: Props) {
 
 //Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
-    const steps: StepWithId[] = await getSteps();
+    const {data: steps, status} = await getSteps();
 
     //Id for each pokemon
     const ids: string[] = steps.map((step)=>{return step.id})
@@ -131,7 +131,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //Es con lesson, pero por ahora lo hacemos con step
     const { lessonId } = context.params as Context
 
-    const step = await getStep(lessonId) as StepWithId
+    const {data: step, status} = await getStep(lessonId)
 
     return {
         props: step

@@ -1,34 +1,36 @@
 /// <reference types="cypress" />
 
-class LessonPage{
+import {postCode} from '../../../services/fetchCompiler'
+
+class LessonPage {
     visit(courseId, lessonId) {
-        cy.visit('http://localhost:3000/course/'+courseId+'/lesson/'+lessonId)
+        cy.visit('http://localhost:3000/course/' + courseId + '/lesson/' + lessonId)
     }
 
     //Tabs
-    getTemplateTab(){
+    getTemplateTab() {
         return cy.contains('Template')
     }
 
-    getSolutionTab(){
+    getSolutionTab() {
         return cy.contains('Solution')
     }
 
     //Buttons
-    getSaveButton(){
+    getSaveButton() {
         return cy.contains('Save')
     }
 
-    getRunButtonTemplate(){
+    getRunButtonTemplate() {
         return cy.get('[data-cy="run"]').eq(0)
     }
 
     //Lines
-    getMonacoLine(index){
+    getMonacoLine(index) {
         return cy.get('.view-line').eq(index)
     }
-    
-    getConsoleLog(index){
+
+    getConsoleLog(index) {
         return cy.get('[data-cy="log"]').eq(index)
     }
 }
@@ -42,7 +44,7 @@ describe('Lesson screen', () => {
             .then((res) => {
                 const stepId = res.body.id
                 cy.wrap(stepId).as('stepId')
-                page.visit(1,stepId)
+                page.visit(1, stepId)
             })
     })
 
@@ -57,7 +59,7 @@ describe('Lesson screen', () => {
 
         //Reload 1
         cy.wait(1000)
-        page.visit(1,this.stepId)
+        page.visit(1, this.stepId)
         cy.wait(1000)
 
         page.getTemplateTab().click()
@@ -72,7 +74,7 @@ describe('Lesson screen', () => {
 
         //Reload 2
         cy.wait(1000)
-        page.visit(1,this.stepId)
+        page.visit(1, this.stepId)
         cy.wait(1000)
 
         page.getTemplateTab().click()
@@ -100,10 +102,10 @@ describe('Lesson screen', () => {
         it('Recursion', () => {
             page.getTemplateTab().click()
             page.getMonacoLine(0).type(
-                'def fibonacci(n):{enter}'+
-                'if n in {{}0,1}:{enter}'+
-                'return n{enter}'+
-                '{backspace}return fibonacci(n-1) + fibonacci(n-2){enter}'+
+                'def fibonacci(n):{enter}' +
+                'if n in {{}0,1}:{enter}' +
+                'return n{enter}' +
+                '{backspace}return fibonacci(n-1) + fibonacci(n-2){enter}' +
                 '{backspace}print(fibonacci(14))'
             )
             page.getRunButtonTemplate().click()
@@ -113,8 +115,8 @@ describe('Lesson screen', () => {
         it('Infinite loop', () => {//TIMEOUT
             page.getTemplateTab().click()
             page.getMonacoLine(0).type(
-                'i = 0{enter}'+
-                'while True:{enter}'+
+                'i = 0{enter}' +
+                'while True:{enter}' +
                 'i=i+1{enter}'
             )
             page.getRunButtonTemplate().click()
@@ -131,5 +133,39 @@ describe('Lesson screen', () => {
             cy.wait(3000)
             page.getConsoleLog(0).should('have.text', 'TIMEOUT')
         })
+
+        it('Syntax Error', () => {//This test should show the stack trace
+            page.getTemplateTab().click()
+            page.getMonacoLine(0).type(
+                "this shouldn't work!"
+            )
+            page.getRunButtonTemplate().click()
+            page.getConsoleLog(0).should('have.text', 'TIMEOUT')
+        })
+
+        it('Import Error', () => {//This test should show the stack trace
+            page.getTemplateTab().click()
+            page.getMonacoLine(0).type('import numpy as np{enter}print(np.array([1, 2, 3]))')
+            page.getRunButtonTemplate().click()
+            page.getConsoleLog(0).should('have.text', 'TIMEOUT')
+        })
+
+        it('Import Error', () => {//This test should show the stack trace
+            page.getTemplateTab().click()
+            page.getMonacoLine(0).type('print(1+"string")')
+            page.getRunButtonTemplate().click()
+            page.getConsoleLog(0).should('have.text', 'TIMEOUT')
+        })
+
+        it('Bad Request', () => {//Should show a bad request error (status)
+            cy.request('POST', 'http://localhost:12345/code',
+                "not a json"
+            ).then((res) =>{
+                // assert.equal(400, res.status)
+                assert.equal(JSON.stringify(res.body),'{"out":"ERROR"}')
+            })
+        })
+
+        //Long time & Modify internal files
     })
 })
