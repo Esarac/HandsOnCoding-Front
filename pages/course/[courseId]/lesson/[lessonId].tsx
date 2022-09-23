@@ -10,7 +10,6 @@ import CustomTab from '../../../../components/tab/customTab'
 import { Step, File } from '../../../../models/models'
 import { StepResponse, putStep, getStep, getSteps } from '../../../../services/fetchStep'
 
-
 import styles from '../../../../styles/lesson.module.scss'
 
 //Component

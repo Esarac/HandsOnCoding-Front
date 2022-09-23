@@ -1,3 +1,5 @@
+@use './themes/theme-1.scss' as theme;
+
 $background-color: #1E1E1E;
 $text-color: #D4D4D4;
 
@@ -9,9 +11,18 @@ $text-color: #D4D4D4;
     height: 40px;
     width: 80px;
 
-    background-color: $background-color;
-    color:$text-color;
+    background-color: theme.$background-2;
+    color: theme.$text;
 
     border: none;
-    border: 1px solid $text-color;
+    border-radius: 10px;
+    border: 1px solid theme.$background-2;
+
+    margin: 10px;
+}
+
+.button:hover,
+.button:active,
+.button:focus{
+    border: 1px solid theme.$primary;
 }
