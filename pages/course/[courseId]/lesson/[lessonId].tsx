@@ -21,6 +21,28 @@ export default function Lesson(props: Props) {
     const [codeTemplate, setCodeTemplate] = useState<string>(props.template?.content as string)
     const [codeSolution, setCodeSolution] = useState<string>(props.solution?.content as string)
 
+    const saveBtn = (
+        <button
+        onClick={(e)=>{
+            const template: File={
+                name: (typeof props.template?.name === 'undefined') ? 'main.py' : props.template?.name,
+                content: codeTemplate
+            }
+
+            const solution: File={
+                name: (typeof props.solution?.name === 'undefined') ? 'main.py' : props.solution?.name,
+                content: codeSolution
+            }
+
+            putStep(props.id, {description: props.description, template: template, solution: solution})
+            .then((v)=>console.log(v))
+            .catch((e)=>console.log(e))
+        }}
+        >
+            Save
+        </button>
+    )
+
     const tab1 = {
         name: 'Description',
         content: (
@@ -34,7 +56,7 @@ export default function Lesson(props: Props) {
         name: 'Template',
         content: (
             <div style={{ width: '100%', height: '75vh' }}>
-                <Ide onChange={setCodeTemplate} language='python' value={props.template?.content as string} />
+                <Ide onChange={setCodeTemplate} language='python' saveBtn={saveBtn} value={props.template?.content as string} />
             </div>
         )
     }
@@ -46,6 +68,7 @@ export default function Lesson(props: Props) {
                 <Ide
                 onChange={setCodeSolution}
                 language='python'
+                saveBtn={saveBtn}
                 value={props.solution?.content as string}
                 />
             </div>
@@ -75,26 +98,6 @@ export default function Lesson(props: Props) {
                                 Go back
                             </Link>
                         </div>
-                        <button
-                        className={styles.button}
-                        onClick={(e)=>{
-                            const template: File={
-                                name: (typeof props.template?.name === 'undefined') ? 'main.py' : props.template?.name,
-                                content: codeTemplate
-                            }
-
-                            const solution: File={
-                                name: (typeof props.solution?.name === 'undefined') ? 'main.py' : props.solution?.name,
-                                content: codeSolution
-                            }
-
-                            putStep(props.id, {description: props.description, template: template, solution: solution})
-                            .then((v)=>console.log(v))
-                            .catch((e)=>console.log(e))
-                        }}
-                        >
-                            Save
-                        </button>
                     </div>
                 </div >
             }

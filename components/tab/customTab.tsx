@@ -1,7 +1,7 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import React from 'react'
-import { table } from 'console';
+import { Button } from 'react-bootstrap';
 
 type Props = {
     /**
@@ -9,7 +9,7 @@ type Props = {
      */
     tabs: Tab[]
     /**
-     * @param {JSX.Element} - A JSX element that will be the header of the tabs (will appear up the tabs)
+     * @param {JSX.Element} - A JSX element that will be the header of the tabs (will appear up the tabs, and is optional)
      */
     header?: JSX.Element
 }
@@ -38,12 +38,12 @@ export default function CustomTab(props: Props) {
                 {props.header}
             </div>
             <TabList>
-                {props.tabs.map((tab) => (
-                    <Tab>{tab.name}</Tab>
+                {props.tabs.map((tab, index) => (
+                    <Tab key={index}>{tab.name}</Tab>
                 ))}
             </TabList>
-            {props.tabs.map((child) => (
-                <TabPanel forceRender={true}>{child.content}</TabPanel>
+            {props.tabs.map((tab, index) => (
+                <TabPanel key={index} forceRender={true}>{tab.content}</TabPanel>
             ))}
         </Tabs>
     )
