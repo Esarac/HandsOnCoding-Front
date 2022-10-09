@@ -13,8 +13,8 @@ import { StepResponse, putStep, getStep, getSteps } from '../../../../services/f
 import styles from '../../../../styles/lesson.module.scss'
 
 //Component
-interface Props extends StepResponse{
-    
+interface Props extends StepResponse {
+
 };
 
 export default function Lesson(props: Props) {
@@ -23,21 +23,21 @@ export default function Lesson(props: Props) {
 
     const saveBtn = (
         <button
-        onClick={(e)=>{
-            const template: File={
-                name: (typeof props.template?.name === 'undefined') ? 'main.py' : props.template?.name,
-                content: codeTemplate
-            }
+            onClick={(e) => {
+                const template: File = {
+                    name: (typeof props.template?.name === 'undefined') ? 'main.py' : props.template?.name,
+                    content: codeTemplate
+                }
 
-            const solution: File={
-                name: (typeof props.solution?.name === 'undefined') ? 'main.py' : props.solution?.name,
-                content: codeSolution
-            }
+                const solution: File = {
+                    name: (typeof props.solution?.name === 'undefined') ? 'main.py' : props.solution?.name,
+                    content: codeSolution
+                }
 
-            putStep(props.id, {description: props.description, template: template, solution: solution})
-            .then((v)=>console.log(v))
-            .catch((e)=>console.log(e))
-        }}
+                putStep(props.id, { description: props.description, template: template, solution: solution })
+                    .then((v) => console.log(v))
+                    .catch((e) => console.log(e))
+            }}
         >
             Save
         </button>
@@ -56,7 +56,11 @@ export default function Lesson(props: Props) {
         name: 'Template',
         content: (
             <div style={{ width: '100%', height: '75vh' }}>
-                <Ide onChange={setCodeTemplate} language='python' saveBtn={saveBtn} value={props.template?.content as string} />
+                <Ide
+                    onChange={setCodeTemplate}
+                    language='python'
+                    saveBtn={saveBtn}
+                    value={props.template?.content as string} />
             </div>
         )
     }
@@ -66,10 +70,10 @@ export default function Lesson(props: Props) {
         content: (
             <div style={{ width: '100%', height: '75vh' }}>
                 <Ide
-                onChange={setCodeSolution}
-                language='python'
-                saveBtn={saveBtn}
-                value={props.solution?.content as string}
+                    onChange={setCodeSolution}
+                    language='python'
+                    saveBtn={saveBtn}
+                    value={props.solution?.content as string}
                 />
             </div>
         )
@@ -107,10 +111,10 @@ export default function Lesson(props: Props) {
 
 //Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
-    const {data: steps, status} = await getSteps();
+    const { data: steps, status } = await getSteps();
 
     //Id for each pokemon
-    const ids: string[] = steps.map((step)=>{return step.id})
+    const ids: string[] = steps.map((step) => { return step.id })
 
     const paths = ids.map((id) => {
         return {
@@ -133,7 +137,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //Es con lesson, pero por ahora lo hacemos con step
     const { lessonId } = context.params as Context
 
-    const {data: step, status} = await getStep(lessonId)
+    const { data: step, status } = await getStep(lessonId)
 
     return {
         props: step
