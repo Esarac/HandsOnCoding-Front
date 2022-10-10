@@ -95,13 +95,13 @@ export default function CustomTab(props: Props) {
                 {props.header}
             </div>
             <TabList>
-                {props.removeable ? 
-                (props.tabs.map((tab, index) => (
-                    <ContextMenuTab key={index} children={tab.name} onClick={tab.onClick}></ContextMenuTab>
-                ))) 
-                : (props.tabs.map((tab, index) => (
-                    <Tab key={index} children={tab.name}></Tab>
-                )))}
+                {props.removeable ?
+                    (props.tabs.map((tab, index) => (
+                        <ContextMenuTab key={index} children={tab.name} onClick={tab.onClick}></ContextMenuTab>
+                    )))
+                    : (props.tabs.map((tab, index) => (
+                        <Tab key={index} children={tab.name}></Tab>
+                    )))}
             </TabList>
             {props.tabs.map((tab, index) => (
                 <TabPanel key={index} forceRender={true}>{tab.content}</TabPanel>

@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ParsedUrlQuery } from 'querystring'
-
 import Ide from '../../../../components/ide/ide'
 import CustomTab from '../../../../components/tab/customTab'
 import { Step, File } from '../../../../models/models'
 import { StepResponse, putStep, getStep, getSteps } from '../../../../services/fetchStep'
-
 import styles from '../../../../styles/lesson.module.scss'
+import { data } from 'cypress/types/jquery'
 
 //Component
 interface Props extends StepResponse {
@@ -20,6 +18,13 @@ interface Props extends StepResponse {
 export default function Lesson(props: Props) {
     const [codeTemplate, setCodeTemplate] = useState<string>(props.template?.content as string)
     const [codeSolution, setCodeSolution] = useState<string>(props.solution?.content as string)
+    const [steps, setSteps] = useState<Array<StepResponse>>([])
+
+    useEffect(() => {
+        getSteps().then(res => {
+            setSteps(res.data)
+        }).catch(err => console.log(err))
+    }, [])
 
     const saveBtn = (
         <button
@@ -93,7 +98,7 @@ export default function Lesson(props: Props) {
     }
 
     return (
-        <CustomTab tabs={[tab1, tab2, tab3, tab4]} 
+        <CustomTab tabs={[tab1, tab2, tab3, tab4]}
             header={
                 < div >
                     <Head>
