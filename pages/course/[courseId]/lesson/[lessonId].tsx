@@ -43,6 +43,10 @@ export default function Lesson(props: Props) {
         </button>
     )
 
+    const deleteTab = () => {
+        console.log("Delete")
+    }
+
     const tab1 = {
         name: 'Description',
         content: (
@@ -89,7 +93,7 @@ export default function Lesson(props: Props) {
     }
 
     return (
-        <CustomTab tabs={[tab1, tab2, tab3, tab4]}
+        <CustomTab tabs={[tab1, tab2, tab3, tab4]} 
             header={
                 < div >
                     <Head>
