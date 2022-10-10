@@ -5,52 +5,69 @@ import Link from 'next/link'
 import { ParsedUrlQuery } from 'querystring'
 import Ide from '../../../../components/ide/ide'
 import CustomTab from '../../../../components/tab/customTab'
-import { Step, File } from '../../../../models/models'
-import { StepResponse, putStep, getStep, getSteps } from '../../../../services/fetchStep'
+import { Lesson } from 'models/lessons'
+import { Step, StepNested } from 'models/steps'
+import { putStep, getStep, getSteps } from '../../../../services/fetchStep'
 import styles from '../../../../styles/lesson.module.scss'
 import { data } from 'cypress/types/jquery'
+import { getLesson, getLessons } from 'services/fetchLesson'
+import { TemplateDTO } from 'models/templates'
+import { SolutionDTO } from 'models/solutions'
+import { postSolution, postTemplate, putSolution, putTemplate } from 'services/fetchFile'
 
 //Component
-interface Props extends StepResponse {
-
+interface Props extends Lesson {
+    steps: StepNested[]
 };
 
-export default function Lesson(props: Props) {
-    const [codeTemplate, setCodeTemplate] = useState<string>(props.template?.content as string)
-    const [codeSolution, setCodeSolution] = useState<string>(props.solution?.content as string)
-    const [steps, setSteps] = useState<Array<StepResponse>>([])
+export default function LessonPage(props: Props) {
+    const [codeTemplate, setCodeTemplate] = useState<string>(props.steps[0].template?.content as string)
+    const [codeSolution, setCodeSolution] = useState<string>(props.steps[0].solution?.content as string)
 
-    useEffect(() => {
-        getSteps().then(res => {
-            setSteps(res.data)
-        }).catch(err => console.log(err))
-    }, [])
-
-    const saveBtn = (
+    const saveBtnTemplate = (
         <button
             onClick={(e) => {
-                const template: File = {
-                    name: (typeof props.template?.name === 'undefined') ? 'main.py' : props.template?.name,
-                    content: codeTemplate
+                const template: TemplateDTO = {
+                    name: (typeof props.steps[0].template?.name === 'undefined') ? 'main.py' : props.steps[0].template?.name,
+                    content: codeTemplate,
+                    stepId: props.steps[0].id
                 }
-
-                const solution: File = {
-                    name: (typeof props.solution?.name === 'undefined') ? 'main.py' : props.solution?.name,
-                    content: codeSolution
+                if(props.steps[0].template) {
+                    console.log("PUT")
+                    putTemplate(props.steps[0].template.id, template)
                 }
-
-                putStep(props.id, { description: props.description, template: template, solution: solution })
-                    .then((v) => console.log(v))
-                    .catch((e) => console.log(e))
+                else {
+                    console.log("POST")
+                    postTemplate(template)
+                }
             }}
         >
             Save
         </button>
     )
 
-    const deleteTab = () => {
-        console.log("Delete")
-    }
+    const saveBtnSolution = (
+        <button
+            onClick={(e) => {
+                const solution: SolutionDTO = {
+                    name: (typeof props.steps[0].solution?.name === 'undefined') ? 'main.py' : props.steps[0].solution?.name,
+                    content: codeSolution,
+                    stepId: props.steps[0].id
+                }
+                if(props.steps[0].solution) {
+                    console.log("PUT")
+                    putSolution(props.steps[0].solution.id, solution)
+                }
+                else {
+                    console.log("POST")
+                    postSolution(solution)
+                }
+                
+            }}
+        >
+            Save
+        </button>
+    )
 
     const tab1 = {
         name: 'Description',
@@ -68,8 +85,8 @@ export default function Lesson(props: Props) {
                 <Ide
                     onChange={setCodeTemplate}
                     language='python'
-                    saveBtn={saveBtn}
-                    value={props.template?.content as string} />
+                    saveBtn={saveBtnTemplate}
+                    value={props.steps[0].template?.content as string} />
             </div>
         )
     }
@@ -81,8 +98,8 @@ export default function Lesson(props: Props) {
                 <Ide
                     onChange={setCodeSolution}
                     language='python'
-                    saveBtn={saveBtn}
-                    value={props.solution?.content as string}
+                    saveBtn={saveBtnSolution}
+                    value={props.steps[0].solution?.content as string}
                 />
             </div>
         )
@@ -98,32 +115,39 @@ export default function Lesson(props: Props) {
     }
 
     return (
-        <CustomTab tabs={[tab1, tab2, tab3, tab4]}
-            header={
-                < div >
-                    <Head>
-                        <title>{"Step - " + props.description}</title>
-                    </Head>
-                    <h1>We are in Step {props.description}</h1>
-                    <div>
-                        <div className={styles.button}>
-                            <Link href="/">
-                                Go back
-                            </Link>
+        <>
+        {console.log(props)}
+            <CustomTab tabs={[tab1, tab2, tab3, tab4]}
+                header={
+                    < div >
+                        <Head>
+                            <title>{"Lesson - " + props.title}</title>
+                        </Head>
+                        <h1>{props.title}</h1>
+                        <div>
+                            <div className={styles.button}>
+                                <Link href="/">
+                                    Go back
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                </div >
-            }
-        ></CustomTab>
+                    </div >
+                }
+            ></CustomTab>
+        </>
     )
+
+    const deleteTab = () => {
+        console.log("Delete")
+    }
 }
 
 //Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
-    const { data: steps, status } = await getSteps();
+    const { data: lessons, status } = await getLessons();
 
     //Id for each pokemon
-    const ids: string[] = steps.map((step) => { return step.id })
+    const ids: string[] = lessons.map((lessons) => { return lessons.id })
 
     const paths = ids.map((id) => {
         return {
@@ -146,9 +170,22 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //Es con lesson, pero por ahora lo hacemos con step
     const { lessonId } = context.params as Context
 
-    const { data: step, status } = await getStep(lessonId)
+    const { data: lessonNested, status } = await getLesson(lessonId)
+
+    const { steps : rawSteps,...lesson} = lessonNested
+
+    var steps: StepNested[] = []
+
+    if(status == 200) {
+        steps = await Promise.all(
+            rawSteps.map(async (step) => {
+                const {data: stepNested, status} = await getStep(step.id)
+                return stepNested
+            })
+        )        
+    }
 
     return {
-        props: step
+        props: {... lesson, steps}
     }
 }
