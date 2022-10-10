@@ -61,7 +61,7 @@ export interface Lesson {
     start: Date;
     end: Date | null;
     courseId: string;
-    languageId: string;
+    languageName: string;
 }
 
 /**

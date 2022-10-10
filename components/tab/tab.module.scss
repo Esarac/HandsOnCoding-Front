@@ -2,3 +2,16 @@
     font-size: 12px;
     padding-left: 5px;
 }
+
+/*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
+.btnPrimary {
+    color: black;
+    background-color: white;
+    border-color: black; /*set the color you want here*/
+    margin-left: 3px;
+}
+.btnPrimary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: white !important;
+    border-color: black; /*set the color you want here*/
+}

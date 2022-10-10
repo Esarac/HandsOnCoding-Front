@@ -3,7 +3,7 @@ import 'react-tabs/style/react-tabs.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import style from './tab.module.scss'
 import React from 'react'
-import { ButtonGroup, Dropdown } from 'react-bootstrap';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
 
 type Props = {
@@ -16,9 +16,13 @@ type Props = {
      */
     header?: JSX.Element
     /**
-     * @param {boolean} - Idicates if the tabs are removeable (optional, false by default).
+     * @param {arrow function} - A function that handles a tab deleting (optional).
      */
-    removeable?: boolean
+    delete?: () => void
+    /**
+     * @param {arrow function} - A function that handles a tab creating (optional).
+     */
+    create?: () => void
 }
 
 /**
@@ -36,7 +40,6 @@ interface Tab {
     /**
      * The delete function of the tab (optional).
      */
-    onClick?: () => {}
 }
 
 /**
@@ -95,13 +98,16 @@ export default function CustomTab(props: Props) {
                 {props.header}
             </div>
             <TabList>
-                {props.removeable ?
+                {props.delete ?
                     (props.tabs.map((tab, index) => (
-                        <ContextMenuTab key={index} children={tab.name} onClick={tab.onClick}></ContextMenuTab>
+                        <ContextMenuTab key={index} children={tab.name} onClick={props.delete}></ContextMenuTab>
                     )))
                     : (props.tabs.map((tab, index) => (
                         <Tab key={index} children={tab.name}></Tab>
                     )))}
+                {props.create &&
+                <Button className={style.btnPrimary + " bi bi-plus"} onClick={props.create}>
+                </Button>}
             </TabList>
             {props.tabs.map((tab, index) => (
                 <TabPanel key={index} forceRender={true}>{tab.content}</TabPanel>
@@ -109,7 +115,3 @@ export default function CustomTab(props: Props) {
         </Tabs>
     )
 }
-
-CustomTab.defaultProps = {
-    removeable: false
-};
