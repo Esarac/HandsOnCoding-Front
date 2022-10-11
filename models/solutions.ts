@@ -1,5 +1,6 @@
-export interface SolutionDTO extends Omit<Solution, 'updatedAt' | 'id'>{};
+export interface SolutionRawDTO extends Omit<SolutionDTO, 'stepId'>{};
 
+export interface SolutionDTO extends Omit<Solution, 'id' | 'updatedAt'>{};
 
 export interface Solution {
     id: string;

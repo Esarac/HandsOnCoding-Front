@@ -1,11 +1,13 @@
 import Ide from 'components/ide/ide'
 import { SolutionDTO } from 'models/solutions'
 import { StepNested } from 'models/steps'
-import { TemplateDTO } from 'models/templates'
+import { TemplateRawDTO } from 'models/templates'
+import { SolutionRawDTO } from 'models/solutions'
 import React, { useState } from 'react'
 import style from './step.module.scss'
 import { postSolution, postTemplate, putSolution, putTemplate } from 'services/fetchFile'
 import CustomTab from 'components/tab/customTab'
+import { postStepTemplate, postStepSolution } from 'services/fetchStep'
 
 type Props = {
     step: StepNested
@@ -18,17 +20,14 @@ export default function Step(props: Props) {
     const saveBtnTemplate = (
         <button
             onClick={(e) => {
-                const template: TemplateDTO = {
+                const template: TemplateRawDTO = {
                     name: (typeof props.step.template?.name === 'undefined') ? 'main.py' : props.step.template?.name,
-                    content: codeTemplate,
-                    stepId: props.step.id
+                    content: codeTemplate
                 }
-                if (props.step.template) {
-                    putTemplate(props.step.template.id, template)
-                }
-                else {
-                    postTemplate(template)
-                }
+
+                postStepTemplate(props.step.id, template)
+                    .then(v => console.log(v))
+                    .catch(e => console.log(e))
             }}
         >
             Save
@@ -38,17 +37,14 @@ export default function Step(props: Props) {
     const saveBtnSolution = (
         <button
             onClick={(e) => {
-                const solution: SolutionDTO = {
+                const solution: SolutionRawDTO = {
                     name: (typeof props.step.solution?.name === 'undefined') ? 'main.py' : props.step.solution?.name,
                     content: codeSolution,
-                    stepId: props.step.id
                 }
-                if (props.step.solution) {
-                    putSolution(props.step.solution.id, solution)
-                }
-                else {
-                    postSolution(solution)
-                }
+
+                postStepSolution(props.step.id, solution)
+                    .then(v => console.log(v))
+                    .catch(e => console.log(e))
             }}
         >
             Save
