@@ -17,9 +17,10 @@ interface Props extends Lesson {
 };
 
 export default function LessonPage(props: Props) {
+    const [steps, setSteps] = useState(props.steps)
 
-    const deleteTab = () => {
-        console.log("Delete!")
+    const deleteTab = (step: StepNested): void => {
+        console.log("STEP:" + step.id)
     }
 
     const addStep = () => {
@@ -34,6 +35,7 @@ export default function LessonPage(props: Props) {
                     content: (
                         <Step step={step}></Step>
                     ),
+                    delete: () => deleteTab(step)
                 }
             })}
                 header={
@@ -50,7 +52,7 @@ export default function LessonPage(props: Props) {
                             </div>
                         </div>
                     </div >)}
-                delete={deleteTab}
+                removeable={true}
                 create={addStep}
             ></CustomTab>
         </>

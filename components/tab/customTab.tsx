@@ -5,6 +5,7 @@ import style from './tab.module.scss'
 import React from 'react'
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
+import { StepNested } from 'models/steps';
 
 type Props = {
     /**
@@ -16,9 +17,9 @@ type Props = {
      */
     header?: JSX.Element
     /**
-     * @param {arrow function} - A function that handles a tab deleting (optional).
+     * @param {boolean} - Idicates if the tabs are removeable (optional, false by default).
      */
-    delete?: () => void
+     removeable?: boolean
     /**
      * @param {arrow function} - A function that handles a tab creating (optional).
      */
@@ -38,8 +39,9 @@ interface Tab {
      */
     content: JSX.Element
     /**
-     * The delete function of the tab (optional).
+     * @param {arrow function} - A function that handles a tab deleting (optional).
      */
+     delete?: (element: any) => void
 }
 
 /**
@@ -58,7 +60,7 @@ const CustomToggle = React.forwardRef(
         <a
             href=""
             ref={ref}
-            onClick={e => {
+            onClick={(e) => {
                 e.preventDefault();
                 if (props.onClick) props.onClick(e);
             }}
@@ -98,14 +100,14 @@ export default function CustomTab(props: Props) {
                 {props.header}
             </div>
             <TabList>
-                {props.delete ?
+                {props.removeable ?
                     (props.tabs.map((tab, index) => (
-                        <ContextMenuTab key={index} children={tab.name} onClick={props.delete}></ContextMenuTab>
+                        <ContextMenuTab key={index} children={tab.name} onClick={tab.delete}></ContextMenuTab>
                     )))
                     : (props.tabs.map((tab, index) => (
                         <Tab key={index} children={tab.name}></Tab>
                     )))}
-                {props.create &&
+                {props.removeable &&
                 <Button className={style.btnPrimary + " bi bi-plus"} onClick={props.create}>
                 </Button>}
             </TabList>
