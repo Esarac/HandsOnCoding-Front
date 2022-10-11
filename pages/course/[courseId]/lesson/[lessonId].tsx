@@ -3,13 +3,15 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { Lesson } from 'models/lessons'
 import { StepNested } from 'models/steps'
-import { getStep } from '../../../../services/fetchStep'
+import { deleteStep, getStep, postStep } from '../../../../services/fetchStep'
 import { getLesson, getLessons } from 'services/fetchLesson'
 import CustomTab from 'components/tab/customTab'
+import { StepDTO } from 'models/steps'
 import Step from 'components/step/step'
 import styles from '../../../../styles/lesson.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
+import Router from 'next/router'
 
 //Component
 interface Props extends Lesson {
@@ -20,11 +22,13 @@ export default function LessonPage(props: Props) {
     const [steps, setSteps] = useState(props.steps)
 
     const deleteTab = (step: StepNested): void => {
-        console.log("STEP:" + step.id)
+        console.log(step.id)
+        deleteStep(step.id).then(res => Router.reload()).catch(e => {console.log(e)})
     }
 
     const addStep = () => {
-        console.log("Create!")
+        var step : StepDTO = {lessonId: props.id, description: ''}
+        postStep(step).then(res => Router.reload())
     }
 
     return (

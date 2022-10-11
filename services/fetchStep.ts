@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Step, StepNested } from "../models/steps";
+import { Step, StepDTO, StepNested } from "../models/steps";
 
 export const getStep = async (id: string) => {
     const { data, status } = await axios.get<StepNested>('http://localhost:8080/api/v1/steps/' + id)
@@ -13,13 +13,13 @@ export const getSteps = async () => {
     return { data, status }
 }
 
-export const postStep = async (step: Step) => {
+export const postStep = async (step: StepDTO) => {
     const { data, status } = await axios.post<Step>('http://localhost:8080/api/v1/steps/', step)
 
     return { data, status }
 }
 
-export const putStep = async (id: string, step: Step) => {
+export const putStep = async (id: string, step: StepDTO) => {
     const { data, status } = await axios.put<Step>('http://localhost:8080/api/v1/steps/' + id, step)
 
     return { data, status }
