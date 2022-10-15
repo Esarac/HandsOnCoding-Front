@@ -1,11 +1,8 @@
 import axios from "axios";
+import { CompilerInput, CompilerOutput } from "models/compiler";
 
-export const postCode = async(language: string, code: string) =>{
-    const {data, status} = await axios.post('http://localhost:12345/compileInput',
-    {
-        language,
-        code
-    })
+export const postCode = async(input: CompilerInput) =>{
+    const {data, status} = await axios.post<CompilerOutput>('http://localhost:12345/compileInput', input)
 
     return {data, status};
 }

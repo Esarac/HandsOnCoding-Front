@@ -2,39 +2,47 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getSteps, StepResponse } from 'services/fetchStep'
 import styles from '../styles/Home.module.scss'
 
+import { getLessons } from 'services/fetchLesson'
+import { Lesson } from 'models/lessons'
+
 interface Props {
-    steps : StepResponse[];
+    lessons : Lesson[];
 };
 
 const Home = (props: Props) => {
-  const stepId = props.steps[0].id
+  const stepId = props.lessons
 
-  return (
-    <div className={styles.container}>
+  const lessonCards = props.lessons.map(lesson=>{
+    return(
       <Link
-        href={"/course/1/lesson/"+stepId}
+        href={`/course/${lesson.courseId}/lesson/${lesson.id}`}
       >
         <div className={styles.card}>
-          <h2>Step 1</h2>
+          <h2>{lesson.title}</h2>
           <p>
-            Show you the new page "Step".
+            <a>{lesson.languageName}</a>
           </p>
         </div>
       </Link>
+    )
+  })
+
+  return (
+    <div className={styles.container}>
+      {lessonCards}
     </div>
   )
 }
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const {data: steps, status} = await getSteps()
+  const {data: lessons, status} = await getLessons()
   
 
   // Pass data to the page via props
-  return { props: { steps } }
+  return { props: { lessons } }
 }
 
 export default Home

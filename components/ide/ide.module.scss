@@ -1,5 +1,8 @@
 $background-color: #1E1E1E;
 $text-color: #D4D4D4;
+$red-color: #E74C3C;
+$yellow-color: #F1C40F;
+$green-color: #2ECC71;
 
 .ide{
     height:100%;
@@ -67,6 +70,7 @@ $text-color: #D4D4D4;
             left: -35px;
         }
 
+        // Types
         &.logInput:before{
             content: '$';
         }
@@ -74,11 +78,28 @@ $text-color: #D4D4D4;
         &.logOutput:before{
             content: ''
         }
+
+        // Colors
+        &.logRed{
+            color: $red-color;
+        }
+
+        &.logYellow{
+            color:$yellow-color;
+        }
+
+        &.logGreen{
+            color:$green-color;
+        }
     }
 
     // Input
     .inputContainer{
         position: relative;
+
+        input{
+            border-bottom: 1px solid $text-color;
+        }
     }
     
     & input{

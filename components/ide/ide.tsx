@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Editor from '@monaco-editor/react'
-import Console, { ConsoleHandle } from './console'
+import Console, { ConsoleHandle, LogItem } from './console'
 import { postCode } from '../../services/fetchCompiler'
 import style from './ide.module.scss'
 import { Button } from 'react-bootstrap';
@@ -28,6 +28,7 @@ type Props = {
 export default function Ide(props: Props) {
     //States
     const [code, setCode] = useState(props.value)
+    const [consoleInput, setConsoleInput] = useState("")
 
     useEffect(() => {
         if (props.onChange)
@@ -44,10 +45,25 @@ export default function Ide(props: Props) {
                 <button
                     data-cy="run"
                     onClick={(e) => {
-                        postCode(props.language, code)
-                            .then((response) => {
-                                const content = response.data.out
-                                consoleRef.current?.addLogItems([{ type: 'output', content }])
+                        const input = consoleInput ? consoleInput : undefined
+                        postCode({language: props.language, code, input})
+                            .then(({data, status}) => {
+                                const {code, msg} = data
+
+                                const logInputs = input ? [{ type: 'input', content: msg }] : []
+
+                                var color: 'red' | 'yellow' | 'green' | undefined = 'yellow'
+                                switch(code){
+                                    case 21:
+                                        color = 'red'
+                                    break
+                                    case 10:
+                                        color = 'green'
+                                    break
+                                }
+
+                                const logOutput: LogItem[] = [{ type:'input', color, content: msg }]
+                                consoleRef.current?.addLogItems([...logOutput, ...logOutput])
                             })
                             .catch((e) => console.log(e))
                     }}>
@@ -65,7 +81,7 @@ export default function Ide(props: Props) {
                     }}
                 />
             </div>
-            <Console ref={consoleRef} />
+            <Console onChange={setConsoleInput} ref={consoleRef} />
         </div>
     )
 }

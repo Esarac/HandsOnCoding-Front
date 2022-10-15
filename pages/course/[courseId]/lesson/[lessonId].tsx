@@ -66,14 +66,9 @@ export default function LessonPage(props: Props) {
 //Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
     const { data: lessons, status } = await getLessons();
-
-    //Id for each pokemon
-    const ids: string[] = lessons.map((lessons) => { return lessons.id })
-
-    const paths = ids.map((id) => {
-        return {
-            params: { courseId: '1', lessonId: id },
-        }
+    
+    const paths = lessons.map((lessons) => {
+        return {params: {courseId: lessons.courseId, lessonId: lessons.id}}
     })
 
     return {

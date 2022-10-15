@@ -3,13 +3,14 @@ import React, { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useStat
 import cn from 'classnames'
 import style from './ide.module.scss'
 
-type LogItem = {
-    type: string
+export type LogItem = {
+    type: 'input'|'output'
+    color?: 'red'|'yellow' | 'green'
     content: string
 }
 
 type Props = {
-
+    onChange?: (text: string)=>void
 }
 
 export type ConsoleHandle = {
@@ -20,7 +21,7 @@ export type ConsoleHandle = {
 /**
  * This component is a console that displays outputs, receive inputs, and allows running commands
  */
-function Console(_props:Props, ref?:Ref<ConsoleHandle>){
+function Console(props:Props, ref?:Ref<ConsoleHandle>){
     //States
     const [input, setInput] = useState<string>('')
     const [log, setLog] = useState<LogItem[]>([])
@@ -31,6 +32,11 @@ function Console(_props:Props, ref?:Ref<ConsoleHandle>){
 
     //Effect
     useEffect(()=>{
+        if(props.onChange)
+            props.onChange(input)
+    },[input])
+
+    useEffect(()=>{//Auto Scroll
         if (consoleRef)
             consoleRef.current?.scroll({ top: consoleRef.current?.scrollHeight })
     },[log])
@@ -63,6 +69,9 @@ function Console(_props:Props, ref?:Ref<ConsoleHandle>){
             className={cn({
                 [style.logInput]: value.type === 'input',
                 [style.logOutput]: value.type === 'output',
+                [style.logRed]: value.color === 'red',
+                [style.logYellow]: value.color === 'yellow',
+                [style.logGreen]: value.color === 'green'
             })}
             key={index}
             >
@@ -83,7 +92,6 @@ function Console(_props:Props, ref?:Ref<ConsoleHandle>){
             {listOutputs}
             <div className={style.inputContainer+' '+style.logInput}>
                 <input
-                disabled //Until the "input()" problem persists
                 ref={inputRef}
                 type="text"
                 value={input}
@@ -93,6 +101,7 @@ function Console(_props:Props, ref?:Ref<ConsoleHandle>){
                         submitCommand()
                 }}
                 />
+                <i>If your code uses inputs, write the inputs before running the code.</i>
             </div>
         </div>
     )
