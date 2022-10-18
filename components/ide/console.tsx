@@ -65,7 +65,7 @@ function Console(props:Props, ref?:Ref<ConsoleHandle>){
     const listOutputs = log.map((value, index)=>{
         return(
             <p
-            data-cy="log"
+            data-cy='log'
             className={cn({
                 [style.logInput]: value.type === 'input',
                 [style.logOutput]: value.type === 'output',
@@ -85,6 +85,7 @@ function Console(props:Props, ref?:Ref<ConsoleHandle>){
 
     return (
         <div
+        data-cy='console'
         ref={consoleRef}
         onClick={(e)=> inputRef.current?.focus()}
         className={style.console}
@@ -92,6 +93,7 @@ function Console(props:Props, ref?:Ref<ConsoleHandle>){
             {listOutputs}
             <div className={style.inputContainer+' '+style.logInput}>
                 <input
+                data-cy='input'
                 ref={inputRef}
                 type="text"
                 value={input}

@@ -6,6 +6,7 @@ import React from 'react'
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
 import { StepNested } from 'models/steps';
+import camelize from 'utils/camelize';
 
 type Props = {
     /**
@@ -19,7 +20,7 @@ type Props = {
     /**
      * @param {boolean} - Idicates if the tabs are removeable (optional, false by default).
      */
-     removeable?: boolean
+    removeable?: boolean
     /**
      * @param {arrow function} - A function that handles a tab creating (optional).
      */
@@ -41,7 +42,7 @@ interface Tab {
     /**
      * @param {arrow function} - A function that handles a tab deleting (optional).
      */
-     delete?: (element: any) => void
+    delete?: (element: any) => void
 }
 
 /**
@@ -102,17 +103,23 @@ export default function CustomTab(props: Props) {
             <TabList>
                 {props.removeable ?
                     (props.tabs.map((tab, index) => (
-                        <ContextMenuTab key={index} children={tab.name} onClick={tab.delete}></ContextMenuTab>
+                        <ContextMenuTab data-cy={`tab-${index}-contextMenu`} key={index} onClick={tab.delete}>
+                            {tab.name}
+                        </ContextMenuTab>
                     )))
                     : (props.tabs.map((tab, index) => (
-                        <Tab key={index} children={tab.name}></Tab>
+                        <Tab data-cy={`tab-${index}`} key={index}>
+                            {tab.name}
+                        </Tab>
                     )))}
                 {props.removeable &&
-                <Button className={style.btnPrimary + " bi bi-plus"} onClick={props.create}>
-                </Button>}
+                    <Button className={style.btnPrimary + " bi bi-plus"} onClick={props.create}>
+                    </Button>}
             </TabList>
             {props.tabs.map((tab, index) => (
-                <TabPanel key={index} forceRender={true}>{tab.content}</TabPanel>
+                <TabPanel data-cy={`tab-${index}-content`} key={index} forceRender={true}>
+                    {tab.content}
+                </TabPanel>
             ))}
         </Tabs>
     )

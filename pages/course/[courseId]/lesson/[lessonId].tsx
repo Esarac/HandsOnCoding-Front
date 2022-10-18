@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { Lesson } from 'models/lessons'
@@ -21,23 +21,51 @@ interface Props extends Lesson {
 export default function LessonPage(props: Props) {
     const [steps, setSteps] = useState(props.steps)
 
+    const [updated, setUpdated] = useState(false)
+
     const deleteTab = (step: StepNested): void => {
         console.log(step.id)
-        deleteStep(step.id).then(res => Router.reload()).catch(e => {console.log(e)})
+        deleteStep(step.id)
+        .then(res => {
+            update()
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     const addStep = () => {
         var step : StepDTO = {lessonId: props.id, description: ''}
-        postStep(step).then(res => Router.reload())
+        postStep(step)
+        .then(res => {
+            update()
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
+    useEffect(()=>{
+        getLessonNested(props.id)
+        .then(res=>{
+            setSteps(res.steps)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    },[updated])
+
+    const update = () => setUpdated(!updated)
+
     return (
-        <>
-            <CustomTab tabs={props.steps.map((step, index) => {
+        <div>
+            <CustomTab tabs={steps.map((step, index) => {
                 return {
                     name: 'Step ' + (index + 1),
                     content: (
-                        <Step step={step}></Step>
+                        <div data-cy={`step-${index}`}>
+                            <Step step={step}></Step>
+                        </div>
                     ),
                     delete: () => deleteTab(step)
                 }
@@ -59,7 +87,7 @@ export default function LessonPage(props: Props) {
                 removeable={true}
                 create={addStep}
             ></CustomTab>
-        </>
+        </div>
     )
 }
 
@@ -86,6 +114,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //Es con lesson, pero por ahora lo hacemos con step
     const { lessonId } = context.params as Context
 
+    const lessonNested: Props = await getLessonNested(lessonId)
+
+    return {
+        props: lessonNested
+    }
+}
+
+export const getLessonNested = async (lessonId: string) => {
     const { data: lessonNested, status } = await getLesson(lessonId)
 
     const { steps: rawSteps, ...lesson } = lessonNested
@@ -100,8 +136,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
             })
         )
     }
-
-    return {
-        props: { ...lesson, steps }
-    }
+    return { ...lesson, steps }
 }

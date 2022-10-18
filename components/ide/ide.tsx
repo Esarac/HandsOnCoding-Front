@@ -39,18 +39,21 @@ export default function Ide(props: Props) {
     const consoleRef = useRef<ConsoleHandle>(null)
 
     return (
-        <div className={style.ide}>
+        <div
+        data-cy='ide'
+        className={style.ide}
+        >
             <div className={style.buttonBar}>
                 {props.saveBtn}
                 <button
-                    data-cy="run"
+                    data-cy='runBtn'
                     onClick={(e) => {
                         const input = consoleInput ? consoleInput : undefined
                         postCode({language: props.language, code, input})
                             .then(({data, status}) => {
                                 const {code, msg} = data
 
-                                const logInputs = input ? [{ type: 'input', content: msg }] : []
+                                const logInputs: LogItem[] = input ? [{ type: 'input', content: msg }] : []
 
                                 var color: 'red' | 'yellow' | 'green' | undefined = 'yellow'
                                 switch(code){
@@ -62,15 +65,15 @@ export default function Ide(props: Props) {
                                     break
                                 }
 
-                                const logOutput: LogItem[] = [{ type:'input', color, content: msg }]
-                                consoleRef.current?.addLogItems([...logOutput, ...logOutput])
+                                const logOutput: LogItem[] = [{ type:'output', color, content: msg }]
+                                consoleRef.current?.addLogItems([...logInputs, ...logOutput])
                             })
                             .catch((e) => console.log(e))
                     }}>
                     Run
                 </button>
             </div>
-            <div className={style.editor}>
+            <div data-cy='editor' className={style.editor}>
                 <Editor
                     defaultValue=""
                     language={props.language}
@@ -81,7 +84,9 @@ export default function Ide(props: Props) {
                     }}
                 />
             </div>
-            <Console onChange={setConsoleInput} ref={consoleRef} />
+            <Console
+            onChange={setConsoleInput}
+            ref={consoleRef} />
         </div>
     )
 }
