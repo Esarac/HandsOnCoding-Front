@@ -12,6 +12,8 @@ import styles from '../../../../styles/lesson.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import SweetAlert from 'react-bootstrap-sweetalert'
 
 //Component
 interface Props extends Lesson {
@@ -20,40 +22,57 @@ interface Props extends Lesson {
 
 export default function LessonPage(props: Props) {
     const [steps, setSteps] = useState(props.steps)
-
     const [updated, setUpdated] = useState(false)
+    const [alert, setAlert] = useState<React.ReactNode>(null)
 
     const deleteTab = (step: StepNested): void => {
-        console.log(step.id)
-        deleteStep(step.id)
-        .then(res => {
-            update()
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        setAlert(
+            <SweetAlert
+                warning
+                showCancel
+                style={{ backgroundColor:'#202020', color: 'white' }}
+                confirmBtnText="Yes, delete it"
+                confirmBtnBsStyle="danger"
+                title="Are you sure?"
+                onConfirm={() => {
+                    deleteStep(step.id)
+                        .then(res => {
+                            setAlert(null)
+                            update()
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                }}
+                onCancel={() => setAlert(null)}
+                focusCancelBtn
+            >
+                This action cannot be undone.
+            </SweetAlert>
+        )
     }
 
     const addStep = () => {
-        var step : StepDTO = {lessonId: props.id, description: ''}
+        var step: StepDTO = { lessonId: props.id, description: '' }
         postStep(step)
-        .then(res => {
-            update()
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            .then(res => {
+                update()
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getLessonNested(props.id)
-        .then(res=>{
-            setSteps(res.steps)
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-    },[updated])
+            .then(res => {
+                setSteps(res.steps)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [updated])
+
 
     const update = () => setUpdated(!updated)
 
@@ -87,6 +106,9 @@ export default function LessonPage(props: Props) {
                 removeable={true}
                 create={addStep}
             ></CustomTab>
+            <>
+                {alert}
+            </>
         </div>
     )
 }
@@ -94,9 +116,9 @@ export default function LessonPage(props: Props) {
 //Fetch
 export const getStaticPaths: GetStaticPaths = async () => {
     const { data: lessons, status } = await getLessons();
-    
+
     const paths = lessons.map((lessons) => {
-        return {params: {courseId: lessons.courseId, lessonId: lessons.id}}
+        return { params: { courseId: lessons.courseId, lessonId: lessons.id } }
     })
 
     return {
