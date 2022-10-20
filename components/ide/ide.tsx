@@ -4,6 +4,7 @@ import Console, { ConsoleHandle, LogItem } from './console'
 import { postCode } from '../../services/fetchCompiler'
 import style from './ide.module.scss'
 import { Button } from 'react-bootstrap';
+import LOG_COLORS from './logcolors.json'
 
 type Props = {
     /**
@@ -28,7 +29,7 @@ type Props = {
 export default function Ide(props: Props) {
     //States
     const [code, setCode] = useState(props.value)
-    const [consoleInput, setConsoleInput] = useState("")
+    const [consoleInput, setConsoleInput] = useState<string[]>([])
 
     useEffect(() => {
         if (props.onChange)
@@ -48,25 +49,23 @@ export default function Ide(props: Props) {
                 <button
                     data-cy='runBtn'
                     onClick={(e) => {
-                        const input = consoleInput ? consoleInput : undefined
+                        const input = consoleInput.join('\n')
                         postCode({language: props.language, code, input})
                             .then(({data, status}) => {
                                 const {code, msg} = data
 
-                                const logInputs: LogItem[] = input ? [{ type: 'input', content: msg }] : []
-
-                                var color: 'red' | 'yellow' | 'green' | undefined = 'yellow'
+                                let color = LOG_COLORS.timeout
                                 switch(code){
                                     case 21:
-                                        color = 'red'
+                                        color = LOG_COLORS.error
                                     break
                                     case 10:
-                                        color = 'green'
+                                        color = LOG_COLORS.success
                                     break
                                 }
 
-                                const logOutput: LogItem[] = [{ type:'output', color, content: msg }]
-                                consoleRef.current?.addLogItems([...logInputs, ...logOutput])
+                                const logOutput: LogItem = { type:'output', color, content: msg }
+                                consoleRef.current?.addCodeOutput(logOutput)
                             })
                             .catch((e) => console.log(e))
                     }}>
@@ -85,7 +84,7 @@ export default function Ide(props: Props) {
                 />
             </div>
             <Console
-            onChange={setConsoleInput}
+            onSubmitInput={setConsoleInput}
             ref={consoleRef} />
         </div>
     )

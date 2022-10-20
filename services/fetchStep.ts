@@ -29,8 +29,8 @@ export const putStep = async (id: string, step: StepDTO) => {
     return { data, status }
 }
 
-export const deleteStep = async (id: string) => {
-    const { data, status } = await axios.delete<Step>(`${BASE_URL}/${id}`)
+export const deleteStep = async (id: string, force: boolean) => {
+    const { data, status } = await axios.delete<Step>(`${BASE_URL}/${id}?force=${force}`)
 
     return { data, status }
 }

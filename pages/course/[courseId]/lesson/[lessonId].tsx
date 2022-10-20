@@ -12,7 +12,7 @@ import styles from '../../../../styles/lesson.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert'
 
 //Component
@@ -31,11 +31,15 @@ export default function LessonPage(props: Props) {
                 warning
                 showCancel
                 style={{ backgroundColor:'#202020', color: 'white' }}
-                confirmBtnText="Yes, delete it"
+                cancelBtnText="Cancel"
+                cancelBtnBsStyle="primary"
+                confirmBtnText="Delete"
                 confirmBtnBsStyle="danger"
-                title="Are you sure?"
+                title="Are you sure you want to delete this step? This action can not be undone."
+                // @ts-ignore
+                children={'This action can not be undone.'}
                 onConfirm={() => {
-                    deleteStep(step.id)
+                    deleteStep(step.id, true)
                         .then(res => {
                             setAlert(null)
                             update()
@@ -46,9 +50,7 @@ export default function LessonPage(props: Props) {
                 }}
                 onCancel={() => setAlert(null)}
                 focusCancelBtn
-            >
-                This action cannot be undone.
-            </SweetAlert>
+            />
         )
     }
 
@@ -78,7 +80,9 @@ export default function LessonPage(props: Props) {
 
     return (
         <div>
-            <CustomTab tabs={steps.map((step, index) => {
+            <CustomTab
+            data-cy={`step-tabs`}
+            tabs={steps.map((step, index) => {
                 return {
                     name: 'Step ' + (index + 1),
                     content: (

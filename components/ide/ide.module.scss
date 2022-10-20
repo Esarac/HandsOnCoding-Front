@@ -3,6 +3,8 @@ $text-color: #D4D4D4;
 $red-color: #E74C3C;
 $yellow-color: #F1C40F;
 $green-color: #2ECC71;
+$blue-color: #3D8BFD;
+$purple-color: #8540F5;
 
 .ide{
     height:100%;
@@ -90,6 +92,14 @@ $green-color: #2ECC71;
 
         &.logGreen{
             color:$green-color;
+        }
+        
+        &.logBlue{
+            color:$blue-color;
+        }
+
+        &.logPurple{
+            color: $purple-color;
         }
     }
 

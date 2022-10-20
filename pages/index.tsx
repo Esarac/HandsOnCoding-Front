@@ -14,12 +14,14 @@ interface Props {
 const Home = (props: Props) => {
   const stepId = props.lessons
 
-  const lessonCards = props.lessons.map(lesson=>{
+  const lessonCards = props.lessons.map((lesson, index)=>{
     return(
       <Link
         href={`/course/${lesson.courseId}/lesson/${lesson.id}`}
       >
-        <div className={styles.card}>
+        <div
+        data-cy={`lesson-${index}`}
+        className={styles.card}>
           <h2>{lesson.title}</h2>
           <p>
             <a>{lesson.languageName}</a>

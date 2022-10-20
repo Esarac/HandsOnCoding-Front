@@ -1,0 +1,7 @@
+{
+    "input":"blue",
+    "command":"purple",
+    "success":"green",
+    "error":"red",
+    "timeout":"yellow"
+}
