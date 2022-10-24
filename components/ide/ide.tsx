@@ -5,6 +5,8 @@ import { postCode } from '../../services/fetchCompiler'
 import style from './ide.module.scss'
 import { Button } from 'react-bootstrap';
 import LOG_COLORS from './logcolors.json'
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 
 type Props = {
     /**
@@ -40,31 +42,29 @@ export default function Ide(props: Props) {
     const consoleRef = useRef<ConsoleHandle>(null)
 
     return (
-        <div
-        data-cy='ide'
-        className={style.ide}
-        >
+
+        <>
             <div className={style.buttonBar}>
                 {props.saveBtn}
                 <button
                     data-cy='runBtn'
                     onClick={(e) => {
                         const input = consoleInput.join('\n')
-                        postCode({language: props.language, code, input})
-                            .then(({data, status}) => {
-                                const {code, msg} = data
+                        postCode({ language: props.language, code, input })
+                            .then(({ data, status }) => {
+                                const { code, msg } = data
 
                                 let color = LOG_COLORS.timeout
-                                switch(code){
+                                switch (code) {
                                     case 21:
                                         color = LOG_COLORS.error
-                                    break
+                                        break
                                     case 10:
                                         color = LOG_COLORS.success
-                                    break
+                                        break
                                 }
 
-                                const logOutput: LogItem = { type:'output', color, content: msg }
+                                const logOutput: LogItem = { type: 'output', color, content: msg }
                                 consoleRef.current?.addCodeOutput(logOutput)
                             })
                             .catch((e) => console.log(e))
@@ -72,20 +72,28 @@ export default function Ide(props: Props) {
                     Run
                 </button>
             </div>
-            <div data-cy='editor' className={style.editor}>
-                <Editor
-                    defaultValue=""
-                    language={props.language}
-                    theme="vs-dark"
-                    value={code}
-                    onChange={(v, e) => {
-                        setCode(v as string)
-                    }}
-                />
+            <div className={style.container}>
+                <Allotment vertical>
+                    <div className={style.ide}>
+                        <div data-cy='editor' className={style.editor}>
+                            <Editor
+                                defaultValue=""
+                                language={props.language}
+                                theme="vs-dark"
+                                value={code}
+                                onChange={(v, e) => {
+                                    setCode(v as string)
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className={style.ide}>
+                        <Console
+                            onSubmitInput={setConsoleInput}
+                            ref={consoleRef} />
+                    </div>
+                </Allotment>
             </div>
-            <Console
-            onSubmitInput={setConsoleInput}
-            ref={consoleRef} />
-        </div>
+        </>
     )
 }

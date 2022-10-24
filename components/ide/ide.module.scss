@@ -30,7 +30,7 @@ $purple-color: #8540F5;
 }
 
 .block{
-    height: 47%;
+    height: 100%;
     width: 100%;
 }
 
@@ -133,6 +133,6 @@ $purple-color: #8540F5;
 .container {
     font-family: sans-serif;
     height: 100vh;
-    resize: horizontal;
-    width: 100vw;
+    resize: vertical;
+    overflow: scroll;
   }
