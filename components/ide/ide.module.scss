@@ -129,3 +129,10 @@ $purple-color: #8540F5;
         white-space: pre;
     }
 }
+
+.container {
+    font-family: sans-serif;
+    height: 100vh;
+    resize: horizontal;
+    width: 100vw;
+  }

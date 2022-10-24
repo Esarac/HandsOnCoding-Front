@@ -8,6 +8,8 @@ import style from './step.module.scss'
 import { postSolution, postTemplate, putSolution, putTemplate } from 'services/fetchFile'
 import CustomTab from 'components/tab/customTab'
 import { postStepTemplate, postStepSolution } from 'services/fetchStep'
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 
 type Props = {
     step: StepNested
@@ -49,7 +51,7 @@ export default function Step(props: Props) {
                     .then(v => console.log(v))
                     .catch(e => console.log(e))
             }}
-            
+
         >
             Save
         </button>
@@ -101,13 +103,15 @@ export default function Step(props: Props) {
     }
 
     return (
-        <div className={style.ideContainer}>
-            <div data-cy='leftBlock' className={style.ide}>
-                <CustomTab tabs={[descriptionTab, testTab]}></CustomTab>
-            </div>
-            <div data-cy='rightBlock' className={style.ide}>
-                <CustomTab tabs={[templateTab, solutionTab]}></CustomTab>
-            </div>
+        <div className={style.container}>
+            <Allotment>
+                <div data-cy='leftBlock' className={style.ide}>
+                    <CustomTab tabs={[descriptionTab, testTab]}></CustomTab>
+                </div>
+                <div data-cy='rightBlock' className={style.ide}>
+                    <CustomTab tabs={[templateTab, solutionTab]}></CustomTab>
+                </div>
+            </Allotment>
         </div>
     )
 }
