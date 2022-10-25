@@ -106,7 +106,7 @@ export default function LessonPage(props: Props) {
 
     return (
         <div>
-            <ToastContainer limit={8} draggablePercent={60} hideProgressBar pauseOnHover={false} theme="dark" pauseOnFocusLoss={false} />
+            <ToastContainer limit={8} draggablePercent={80} hideProgressBar theme="dark"/>
             <CustomTab
                 data-cy={`step-tabs`}
                 tabs={steps.map((step, index) => {
