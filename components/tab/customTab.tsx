@@ -96,7 +96,7 @@ ContextMenuTab.tabsRole = 'Tab';
  */
 export default function CustomTab(props: Props) {
     return (
-        <Tabs>
+        <Tabs focusTabOnClick={false}>
             <div>
                 {props.header}
             </div>

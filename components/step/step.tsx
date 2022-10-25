@@ -20,7 +20,7 @@ export default function Step(props: Props) {
     const [codeSolution, setCodeSolution] = useState<string>(props.step.solution?.content as string)
 
     const saveBtnTemplate = (
-        <button className={style.customButton}
+        <button className={style.customButton + ' bi bi-file-earmark-plus-fill'}
             data-cy='saveBtn'
             onClick={(e) => {
                 const template: TemplateRawDTO = {
@@ -39,7 +39,7 @@ export default function Step(props: Props) {
     )
 
     const saveBtnSolution = (
-        <button className={style.customButton}
+        <button className={style.customButton + ' bi bi-file-earmark-plus-fill'}
             data-cy='saveBtn'
             onClick={(e) => {
                 const solution: SolutionRawDTO = {

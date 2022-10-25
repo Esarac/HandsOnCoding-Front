@@ -7,6 +7,8 @@ import { Button } from 'react-bootstrap';
 import LOG_COLORS from './logcolors.json'
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 type Props = {
     /**
@@ -43,34 +45,38 @@ export default function Ide(props: Props) {
 
     return (
         <>
-            <div>
-                {props.saveBtn}
-                <button className={style.customButton}
-                    data-cy='runBtn'
-                    onClick={(e) => {
-                        const input = consoleInput.join('\n')
-                        postCode({ language: props.language, code, input })
-                            .then(({ data, status }) => {
-                                const { code, msg } = data
+            <Row className='align-items-center'>
+                <Col xs='auto'>
+                    {props.saveBtn}
+                </Col>
+                <Col xs='auto'>
+                    <button className={style.customButton + ' bi bi-caret-right-fill'}
+                        data-cy='runBtn'
+                        onClick={(e) => {
+                            const input = consoleInput.join('\n')
+                            postCode({ language: props.language, code, input })
+                                .then(({ data, status }) => {
+                                    const { code, msg } = data
 
-                                let color = LOG_COLORS.timeout
-                                switch (code) {
-                                    case 21:
-                                        color = LOG_COLORS.error
-                                        break
-                                    case 10:
-                                        color = LOG_COLORS.success
-                                        break
-                                }
+                                    let color = LOG_COLORS.timeout
+                                    switch (code) {
+                                        case 21:
+                                            color = LOG_COLORS.error
+                                            break
+                                        case 10:
+                                            color = LOG_COLORS.success
+                                            break
+                                    }
 
-                                const logOutput: LogItem = { type: 'output', color, content: msg }
-                                consoleRef.current?.addCodeOutput(logOutput)
-                            })
-                            .catch((e) => console.log(e))
-                    }}>
-                    Run
-                </button>
-            </div>
+                                    const logOutput: LogItem = { type: 'output', color, content: msg }
+                                    consoleRef.current?.addCodeOutput(logOutput)
+                                })
+                                .catch((e) => console.log(e))
+                        }}>
+                        Run
+                    </button>
+                </Col>
+            </Row>
             <div className={style.container}>
                 <Allotment vertical>
                     <div className={style.ide}>
