@@ -14,6 +14,8 @@ import Link from 'next/link'
 import Router from 'next/router'
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //Component
 interface Props extends Lesson {
@@ -30,7 +32,7 @@ export default function LessonPage(props: Props) {
             <SweetAlert
                 warning
                 showCancel
-                style={{ backgroundColor:'#202020', color: 'white' }}
+                style={{ backgroundColor: '#202020', color: 'white' }}
                 cancelBtnText="Cancel"
                 cancelBtnBsStyle="primary"
                 confirmBtnText="Delete"
@@ -39,14 +41,22 @@ export default function LessonPage(props: Props) {
                 // @ts-ignore
                 children={'This action cannot be undone.'}
                 onConfirm={() => {
-                    deleteStep(step.id, true)
-                        .then(res => {
-                            setAlert(null)
-                            update()
-                        })
-                        .catch(err => {
-                            console.log(err)
-                        })
+                    new Promise(resolve => setTimeout(resolve, 5000));
+                    toast.promise(
+                        deleteStep(step.id, true)
+                            .then(res => {
+                                setAlert(null)
+                                update()
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            }),
+                        {
+                            pending: 'Deleting step',
+                            success: 'Deleted!',
+                            error: 'Error while deleting the step, please try again!'
+                        }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+                    )
                 }}
                 onCancel={() => setAlert(null)}
                 focusCancelBtn
@@ -56,13 +66,21 @@ export default function LessonPage(props: Props) {
 
     const addStep = () => {
         var step: StepDTO = { lessonId: props.id, description: '' }
-        postStep(step)
-            .then(res => {
-                update()
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        new Promise(resolve => setTimeout(resolve, 5000));
+        toast.promise(
+            postStep(step)
+                .then(res => {
+                    update()
+                })
+                .catch(err => {
+                    console.log(err)
+                }),
+            {
+                pending: 'Creating step',
+                success: 'Added!',
+                error: 'Error while creting the step, please try again!'
+            }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+        )
     }
 
     useEffect(() => {
@@ -80,19 +98,20 @@ export default function LessonPage(props: Props) {
 
     return (
         <div>
+            <ToastContainer limit={8} draggablePercent={60} hideProgressBar pauseOnHover={false} theme="dark" pauseOnFocusLoss={false} />
             <CustomTab
-            data-cy={`step-tabs`}
-            tabs={steps.map((step, index) => {
-                return {
-                    name: 'Step ' + (index + 1),
-                    content: (
-                        <div data-cy={`step-${index}`}>
-                            <Step step={step}></Step>
-                        </div>
-                    ),
-                    delete: () => deleteTab(step)
-                }
-            })}
+                data-cy={`step-tabs`}
+                tabs={steps.map((step, index) => {
+                    return {
+                        name: 'Step ' + (index + 1),
+                        content: (
+                            <div data-cy={`step-${index}`}>
+                                <Step step={step}></Step>
+                            </div>
+                        ),
+                        delete: () => deleteTab(step)
+                    }
+                })}
                 header={
                     (<div>
                         <Head>

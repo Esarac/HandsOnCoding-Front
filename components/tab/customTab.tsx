@@ -8,6 +8,7 @@ import { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
 import { StepNested } from 'models/steps';
 import camelize from 'utils/camelize';
 
+
 type Props = {
     /**
      * @param {Tab} - A list of Tab objects, the component will create n tabs depending of the lenght of this list.

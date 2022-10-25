@@ -10,6 +10,8 @@ import CustomTab from 'components/tab/customTab'
 import { postStepTemplate, postStepSolution } from 'services/fetchStep'
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
     step: StepNested
@@ -27,10 +29,17 @@ export default function Step(props: Props) {
                     name: (typeof props.step.template?.name === 'undefined') ? 'main.py' : props.step.template?.name,
                     content: codeTemplate
                 }
-
-                postStepTemplate(props.step.id, template)
-                    .then(v => console.log(v))
-                    .catch(e => console.log(e))
+                new Promise(resolve => setTimeout(resolve, 5000));
+                toast.promise(
+                    postStepTemplate(props.step.id, template)
+                        .then(v => console.log(v))
+                        .catch(e => console.log(e)),
+                    {
+                        pending: 'Saving',
+                        success: 'Saved!',
+                        error: 'Error while saving, please try again!'
+                    }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+                )
             }}
 
         >
@@ -48,9 +57,17 @@ export default function Step(props: Props) {
                     content: codeSolution,
                 }
 
-                postStepSolution(props.step.id, solution)
-                    .then(v => console.log(v))
-                    .catch(e => console.log(e))
+                new Promise(resolve => setTimeout(resolve, 5000));
+                toast.promise(
+                    postStepSolution(props.step.id, solution)
+                        .then(v => console.log(v))
+                        .catch(e => console.log(e)),
+                    {
+                        pending: 'Saving',
+                        success: 'Saved!',
+                        error: 'Error while saving, please try again!'
+                    }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+                )
             }}
 
         >

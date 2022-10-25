@@ -9,6 +9,8 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {
     /**
@@ -54,24 +56,32 @@ export default function Ide(props: Props) {
                         data-cy='runBtn'
                         onClick={(e) => {
                             const input = consoleInput.join('\n')
-                            postCode({ language: props.language, code, input })
-                                .then(({ data, status }) => {
-                                    const { code, msg } = data
+                            new Promise(resolve => setTimeout(resolve, 15000));
+                            toast.promise(
+                                postCode({ language: props.language, code, input })
+                                    .then(({ data, status }) => {
+                                        const { code, msg } = data
 
-                                    let color = LOG_COLORS.timeout
-                                    switch (code) {
-                                        case 21:
-                                            color = LOG_COLORS.error
-                                            break
-                                        case 10:
-                                            color = LOG_COLORS.success
-                                            break
-                                    }
+                                        let color = LOG_COLORS.timeout
+                                        switch (code) {
+                                            case 21:
+                                                color = LOG_COLORS.error
+                                                break
+                                            case 10:
+                                                color = LOG_COLORS.success
+                                                break
+                                        }
 
-                                    const logOutput: LogItem = { type: 'output', color, content: msg }
-                                    consoleRef.current?.addCodeOutput(logOutput)
-                                })
-                                .catch((e) => console.log(e))
+                                        const logOutput: LogItem = { type: 'output', color, content: msg }
+                                        consoleRef.current?.addCodeOutput(logOutput)
+                                    })
+                                    .catch((e) => console.log(e)),
+                                {
+                                    pending: 'Running',
+                                    success: 'Code executed successfully!',
+                                    error: 'Error while executing the code, please try again!'
+                                }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+                            )
                         }}>
                         <i className={style.icon + ' bi bi-caret-right-fill'}></i>
                         Run
