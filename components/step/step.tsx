@@ -13,6 +13,7 @@ import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { reject } from 'cypress/types/lodash'
+import MarkdownEditor from 'components/editormarkdown/markdownEditor'
 
 type Props = {
     step: StepNested
@@ -97,7 +98,7 @@ export default function Step(props: Props) {
         name: 'Description',
         content: (
             <div data-cy='description'>
-                <h1>Description</h1>
+                <MarkdownEditor></MarkdownEditor>
             </div>
         )
     }
