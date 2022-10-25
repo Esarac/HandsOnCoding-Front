@@ -50,7 +50,7 @@ export default function Ide(props: Props) {
                     {props.saveBtn}
                 </Col>
                 <Col xs='auto'>
-                    <button className={style.customButton + ' bi bi-caret-right-fill'}
+                    <button className={style.customButton}
                         data-cy='runBtn'
                         onClick={(e) => {
                             const input = consoleInput.join('\n')
@@ -73,6 +73,7 @@ export default function Ide(props: Props) {
                                 })
                                 .catch((e) => console.log(e))
                         }}>
+                        <i className={style.icon + ' bi bi-caret-right-fill'}></i>
                         Run
                     </button>
                 </Col>

@@ -23,7 +23,7 @@
     justify-content: center;
 
     height: 40px;
-    width: 80px;
+    width: 120px;
 
     background-color: theme.$background-2;
     color: theme.$text;
@@ -41,4 +41,8 @@
 .customButton:focus {
     border: 1px solid theme.$primary;
     color: theme.$blue-color;
+}
+
+.icon {
+    padding-right: 13px;
 }

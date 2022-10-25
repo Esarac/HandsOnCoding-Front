@@ -148,7 +148,7 @@ $text-color: #D4D4D4;
     justify-content: center;
 
     height: 40px;
-    width: 80px;
+    width: 120px;
 
     background-color: theme.$background-2;
     color: theme.$text;
@@ -166,3 +166,7 @@ $text-color: #D4D4D4;
     border: 1px solid theme.$primary;
     color: $blue-color;
 }
+
+.icon {
+    padding-right: 13px;
+ }
