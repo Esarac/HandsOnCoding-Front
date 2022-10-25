@@ -12,6 +12,7 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { reject } from 'cypress/types/lodash'
 
 type Props = {
     step: StepNested
@@ -29,15 +30,23 @@ export default function Step(props: Props) {
                     name: (typeof props.step.template?.name === 'undefined') ? 'main.py' : props.step.template?.name,
                     content: codeTemplate
                 }
-                new Promise(resolve => setTimeout(resolve, 5000));
-                toast.promise(
+                const promise = new Promise((resolve, reject) => {
                     postStepTemplate(props.step.id, template)
-                        .then(v => console.log(v))
-                        .catch(e => console.log(e)),
+                        .then(v => {
+                            console.log(v)
+                            resolve('Successfull')
+                        })
+                        .catch(e => {
+                            console.log(e)
+                            reject('Failed')
+                        })
+                });
+                toast.promise(
+                    promise,
                     {
                         pending: 'Saving',
                         success: 'Saved!',
-                        error: 'Error while saving, please try again!'
+                        error: "Couldn't save, please try again!"
                     }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
                 )
             }}
@@ -57,15 +66,23 @@ export default function Step(props: Props) {
                     content: codeSolution,
                 }
 
-                new Promise(resolve => setTimeout(resolve, 5000));
-                toast.promise(
+                const promise = new Promise((resolve, reject) => {
                     postStepSolution(props.step.id, solution)
-                        .then(v => console.log(v))
-                        .catch(e => console.log(e)),
+                        .then(v => {
+                            console.log(v)
+                            resolve('Successfull')
+                        })
+                        .catch(e => {
+                            console.log(e)
+                            reject('Failed')
+                        })
+                });
+                toast.promise(
+                    promise,
                     {
                         pending: 'Saving',
                         success: 'Saved!',
-                        error: 'Error while saving, please try again!'
+                        error: "Couldn't save, please try again!"
                     }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
                 )
             }}

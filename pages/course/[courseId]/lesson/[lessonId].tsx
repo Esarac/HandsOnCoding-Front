@@ -41,20 +41,24 @@ export default function LessonPage(props: Props) {
                 // @ts-ignore
                 children={'This action cannot be undone.'}
                 onConfirm={() => {
-                    new Promise(resolve => setTimeout(resolve, 5000));
-                    toast.promise(
+                    const promise = new Promise((resolve, reject) => {
                         deleteStep(step.id, true)
                             .then(res => {
                                 setAlert(null)
                                 update()
+                                resolve('Successfull')
                             })
                             .catch(err => {
                                 console.log(err)
-                            }),
+                                reject('Failed')
+                            })
+                    });
+                    toast.promise(
+                        promise,
                         {
                             pending: 'Deleting step',
                             success: 'Deleted!',
-                            error: 'Error while deleting the step, please try again!'
+                            error: "Couldn't delete the step, please try again!"
                         }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
                     )
                 }}
@@ -66,19 +70,23 @@ export default function LessonPage(props: Props) {
 
     const addStep = () => {
         var step: StepDTO = { lessonId: props.id, description: '' }
-        new Promise(resolve => setTimeout(resolve, 5000));
-        toast.promise(
+        const promise = new Promise((resolve, reject) => {
             postStep(step)
                 .then(res => {
                     update()
+                    resolve('Successfull')
                 })
                 .catch(err => {
                     console.log(err)
-                }),
+                    reject('Failed')
+                })
+        });
+        toast.promise(
+            promise,
             {
                 pending: 'Creating step',
                 success: 'Added!',
-                error: 'Error while creting the step, please try again!'
+                error: "Couldn't create the step, please try again!"
             }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
         )
     }

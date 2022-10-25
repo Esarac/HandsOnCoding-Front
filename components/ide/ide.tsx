@@ -56,30 +56,34 @@ export default function Ide(props: Props) {
                         data-cy='runBtn'
                         onClick={(e) => {
                             const input = consoleInput.join('\n')
-                            new Promise(resolve => setTimeout(resolve, 15000));
+                            const promise = new Promise((resolve, reject) => postCode({ language: props.language, code, input })
+                                .then(({ data, status }) => {
+                                    const { code, msg } = data
+
+                                    let color = LOG_COLORS.timeout
+                                    switch (code) {
+                                        case 21:
+                                            color = LOG_COLORS.error
+                                            break
+                                        case 10:
+                                            color = LOG_COLORS.success
+                                            break
+                                    }
+
+                                    const logOutput: LogItem = { type: 'output', color, content: msg }
+                                    consoleRef.current?.addCodeOutput(logOutput)
+                                    resolve('Successfull')
+                                })
+                                .catch((e) => {
+                                    console.log(e)
+                                    reject('Failed')
+                                }));
                             toast.promise(
-                                postCode({ language: props.language, code, input })
-                                    .then(({ data, status }) => {
-                                        const { code, msg } = data
-
-                                        let color = LOG_COLORS.timeout
-                                        switch (code) {
-                                            case 21:
-                                                color = LOG_COLORS.error
-                                                break
-                                            case 10:
-                                                color = LOG_COLORS.success
-                                                break
-                                        }
-
-                                        const logOutput: LogItem = { type: 'output', color, content: msg }
-                                        consoleRef.current?.addCodeOutput(logOutput)
-                                    })
-                                    .catch((e) => console.log(e)),
+                                promise,
                                 {
                                     pending: 'Running',
                                     success: 'Code executed successfully!',
-                                    error: 'Error while executing the code, please try again!'
+                                    error: 'Execution error, please try again!'
                                 }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
                             )
                         }}>
