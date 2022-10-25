@@ -1,4 +1,6 @@
-.ideContainer{
+@use '../../styles/themes/theme-1.scss' as theme;
+
+.ideContainer {
     height: 10%;
     width: 100%;
     display: flex;
@@ -13,4 +15,29 @@
     font-family: sans-serif;
     height: 100vh;
     resize: horizontal;
-  }
+}
+
+.customButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    width: 80px;
+
+    background-color: theme.$background-2;
+    color: theme.$text;
+
+    border: none;
+    border-radius: 10px;
+    border: 1px solid theme.$background-2;
+
+    margin: 10px;
+}
+
+.customButton:hover,
+.customButton:active,
+.customButton:focus {
+    border: 1px solid theme.$primary;
+    color: theme.$blue-color;
+}

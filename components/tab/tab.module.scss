@@ -1,3 +1,5 @@
+@use '../../styles/themes/theme-1.scss' as theme;
+
 .icon {
     font-size: 12px;
     padding-left: 5px;
@@ -14,4 +16,28 @@
     color: #fff;
     background-color: white !important;
     border-color: black; /*set the color you want here*/
+}
+
+.addButton {
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    width: 50px;
+
+    background-color: theme.$background-2;
+    color: theme.$text;
+
+    border: none;
+    border-radius: 10px;
+    border: 1px solid theme.$background-2;
+
+    margin-left: 5px;
+}
+
+.addButton:hover,
+.addButton:active,
+.addButton:focus {
+    border: 1px solid theme.$primary;
+    color: theme.$blue-color;
 }

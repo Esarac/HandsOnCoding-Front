@@ -12,7 +12,7 @@ import styles from '../../../../styles/lesson.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
-// import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert'
 
 //Component
@@ -35,9 +35,9 @@ export default function LessonPage(props: Props) {
                 cancelBtnBsStyle="primary"
                 confirmBtnText="Delete"
                 confirmBtnBsStyle="danger"
-                title="Are you sure you want to delete this step? This action can not be undone."
+                title="Are you sure you want to delete this step?"
                 // @ts-ignore
-                children={'This action can not be undone.'}
+                children={'This action cannot be undone.'}
                 onConfirm={() => {
                     deleteStep(step.id, true)
                         .then(res => {

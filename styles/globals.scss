@@ -1,13 +1,5 @@
 @use './themes/theme-1' as theme;
 
-$theme-colors: (
-  "primary": theme.$primary,
-  "background-1": theme.$background-1,
-  "background-2": theme.$background-2,
-  "background-3": theme.$background-3,
-  "text": theme.$text
-);
-
 @import "node_modules/bootstrap/scss/bootstrap";
 
 html,
@@ -26,11 +18,6 @@ html {
 body {
   color: theme.$text;
   background: theme.$background-1;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
 }
 
 * {

@@ -20,7 +20,7 @@ export default function Step(props: Props) {
     const [codeSolution, setCodeSolution] = useState<string>(props.step.solution?.content as string)
 
     const saveBtnTemplate = (
-        <button
+        <button className={style.customButton}
             data-cy='saveBtn'
             onClick={(e) => {
                 const template: TemplateRawDTO = {
@@ -39,7 +39,7 @@ export default function Step(props: Props) {
     )
 
     const saveBtnSolution = (
-        <button
+        <button className={style.customButton}
             data-cy='saveBtn'
             onClick={(e) => {
                 const solution: SolutionRawDTO = {
@@ -105,10 +105,10 @@ export default function Step(props: Props) {
     return (
         <div className={style.container}>
             <Allotment>
-                <div data-cy='leftBlock' className={style.ide}>
+                <div data-cy='leftBlock'>
                     <CustomTab tabs={[descriptionTab, testTab]}></CustomTab>
                 </div>
-                <div data-cy='rightBlock' className={style.ide}>
+                <div data-cy='rightBlock'>
                     <CustomTab tabs={[templateTab, solutionTab]}></CustomTab>
                 </div>
             </Allotment>

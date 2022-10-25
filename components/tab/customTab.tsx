@@ -113,7 +113,7 @@ export default function CustomTab(props: Props) {
                         </Tab>
                     )))}
                 {props.removeable &&
-                    <Button data-cy={`tab-add`} className={style.btnPrimary + " bi bi-plus"} onClick={props.create}>
+                    <Button data-cy={`tab-add`} className={style.addButton + " bi bi-plus"} onClick={props.create}>
                     </Button>}
             </TabList>
             {props.tabs.map((tab, index) => (

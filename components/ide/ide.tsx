@@ -42,11 +42,10 @@ export default function Ide(props: Props) {
     const consoleRef = useRef<ConsoleHandle>(null)
 
     return (
-
         <>
-            <div className={style.buttonBar}>
+            <div>
                 {props.saveBtn}
-                <button
+                <button className={style.customButton}
                     data-cy='runBtn'
                     onClick={(e) => {
                         const input = consoleInput.join('\n')

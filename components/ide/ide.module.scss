@@ -1,3 +1,4 @@
+@use '../../styles/themes/theme-1.scss' as theme;
 $background-color: #1E1E1E;
 $text-color: #D4D4D4;
 $red-color: #E74C3C;
@@ -5,36 +6,38 @@ $yellow-color: #F1C40F;
 $green-color: #2ECC71;
 $blue-color: #3D8BFD;
 $purple-color: #8540F5;
+$text-color: #D4D4D4;
 
-.ide{
-    height:100%;
+
+.ide {
+    height: 100%;
     width: 100%;
     background-color: $text-color;
 }
 
-.buttonBar{
+.buttonBar {
     height: 5%;
     width: 100%;
     display: flex;
 
-    & button{
+    & button {
         height: 100%;
         width: 100%;
 
         background-color: $background-color;
-        color:$text-color;
+        color: $text-color;
 
         border: none;
         border: 1px solid $text-color;
     }
 }
 
-.block{
+.block {
     height: 100%;
     width: 100%;
 }
 
-.editor{
+.editor {
     @extend .block;
 }
 
@@ -47,25 +50,27 @@ $purple-color: #8540F5;
 
     border-top: 1px solid $text-color;
     padding-left: 64px;
-    
+
     // Scroll-bar
     overflow-x: hidden;
     overflow-y: auto;
     scroll-behavior: auto;
-    &::-webkit-scrollbar{
+
+    &::-webkit-scrollbar {
         width: 15px;
         background: $background-color;
     }
+
     &::-webkit-scrollbar-thumb {
         background: rgb($text-color, 0.2);
     }
 
     // All
-    & *{
+    & * {
         color: $text-color;
         font-size: small;
 
-        &:before{
+        &:before {
             padding: 0;
             margin: 0;
             position: absolute;
@@ -73,46 +78,46 @@ $purple-color: #8540F5;
         }
 
         // Types
-        &.logInput:before{
+        &.logInput:before {
             content: '$';
         }
-        
-        &.logOutput:before{
+
+        &.logOutput:before {
             content: ''
         }
 
         // Colors
-        &.logRed{
+        &.logRed {
             color: $red-color;
         }
 
-        &.logYellow{
-            color:$yellow-color;
+        &.logYellow {
+            color: $yellow-color;
         }
 
-        &.logGreen{
-            color:$green-color;
-        }
-        
-        &.logBlue{
-            color:$blue-color;
+        &.logGreen {
+            color: $green-color;
         }
 
-        &.logPurple{
+        &.logBlue {
+            color: $blue-color;
+        }
+
+        &.logPurple {
             color: $purple-color;
         }
     }
 
     // Input
-    .inputContainer{
+    .inputContainer {
         position: relative;
 
-        input{
+        input {
             border-bottom: 1px solid $text-color;
         }
     }
-    
-    & input{
+
+    & input {
         padding-bottom: 10px;
         background-color: transparent;
         border: none;
@@ -121,7 +126,7 @@ $purple-color: #8540F5;
     }
 
     // Paragraphs
-    & p{
+    & p {
         margin-bottom: 0px;
         margin-top: 0px;
         position: relative;
@@ -135,4 +140,29 @@ $purple-color: #8540F5;
     height: 100vh;
     resize: vertical;
     overflow: scroll;
-  }
+}
+
+.customButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    width: 80px;
+
+    background-color: theme.$background-2;
+    color: theme.$text;
+
+    border: none;
+    border-radius: 10px;
+    border: 1px solid theme.$background-2;
+
+    margin: 10px;
+}
+
+.customButton:hover,
+.customButton:active,
+.customButton:focus {
+    border: 1px solid theme.$primary;
+    color: $blue-color;
+}
