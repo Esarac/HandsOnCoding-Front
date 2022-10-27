@@ -2,8 +2,13 @@ import axios from 'axios'
 import { TemplateDTO } from 'models/templates'
 import { SolutionDTO } from 'models/solutions'
 
+const BASE_URL = `${process.env.BACK_URL}/api/v1`
+
+//Template
+const TEMPLATE_BASE_URL = `${BASE_URL}/templates`
+
 export const putTemplate = async(id:string, template: TemplateDTO) => {
-    const {data, status} = await axios.put<TemplateDTO>('http://localhost:8080/api/v1/templates/'+id,
+    const {data, status} = await axios.put<TemplateDTO>(`${TEMPLATE_BASE_URL}/${id}`,
         template
     )
 
@@ -11,15 +16,18 @@ export const putTemplate = async(id:string, template: TemplateDTO) => {
 }
 
 export const postTemplate = async(template: TemplateDTO) => {
-    const {data, status} = await axios.post<TemplateDTO>('http://localhost:8080/api/v1/templates/',
+    const {data, status} = await axios.post<TemplateDTO>(`${TEMPLATE_BASE_URL}`,
         template
     )
 
     return {data, status}
 }
 
+// Solution
+const SOLUTION_BASE_URL = `${BASE_URL}/solutions`
+
 export const putSolution = async(id:string, solution: SolutionDTO) => {
-    const {data, status} = await axios.put<SolutionDTO>('http://localhost:8080/api/v1/solutions/'+id,
+    const {data, status} = await axios.put<SolutionDTO>(`${SOLUTION_BASE_URL}/${id}`,
         solution
     )
 
@@ -29,7 +37,7 @@ export const putSolution = async(id:string, solution: SolutionDTO) => {
 }
 
 export const postSolution = async(solution: SolutionDTO) => {
-    const {data, status} = await axios.post<SolutionDTO>('http://localhost:8080/api/v1/solutions/',
+    const {data, status} = await axios.post<SolutionDTO>(`${SOLUTION_BASE_URL}`,
         solution
     )
 

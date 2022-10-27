@@ -58,6 +58,12 @@ npm run dev
 yarn dev
 ```
 
+If you want to use Docker, open Docker Desktop and run this commands instead:
+```bash
+docker build -t front:hoc .
+docker run --name hoc_front -p 3000:3000 front:hoc
+```
+
 ### Cypress (Test)
 
 [Cypress](https://www.cypress.io/) is the new standard in front-end testing that every developer and QA engineer needs.
