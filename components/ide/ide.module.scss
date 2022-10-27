@@ -164,7 +164,7 @@ $text-color: #D4D4D4;
 .customButton:active,
 .customButton:focus {
     border: 1px solid theme.$primary;
-    color: $blue-color;
+    color: theme.$blue-color;
 }
 
 .icon {

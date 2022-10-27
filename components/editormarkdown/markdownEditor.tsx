@@ -2,6 +2,7 @@ import React from "react";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
+import style from './markdownEditor.module.scss'
 import { useState } from "react";
 
 const MDEditor = dynamic(
@@ -20,12 +21,29 @@ const Markdown = dynamic(
   { ssr: false }
 );
 
-export default function MarkdownEditor() {
-    const [value, setValue] = useState("**Hello world!!!**");
+type Props = {
+  /**
+   * @param {text} - The text of the MarkdownEditor.
+   */
+  text: string
+  /**
+     * @param {arrow function} - A function that handles saving the text.
+     */
+   save: (element: any) => void
+}
+
+export default function MarkdownEditor(props: Props) {
+  const [value, setValue] = useState<string>(props.text as string);
   return (
-    <div data-color-mode="dark">
+    <div>
+      <button className={style.customButton} onClick={() => props.save(value)}>
+        <i className={style.icon + ' bi bi-markdown-fill'}></i>
+        Save
+      </button>
+      <div data-color-mode="dark">
         {/*// @ts-ignore*/}
-        <MDEditor height={800} value={value} onChange={setValue} />
+        <MDEditor height={865} value={value} onChange={setValue} />
+      </div>
     </div>
   );
 }

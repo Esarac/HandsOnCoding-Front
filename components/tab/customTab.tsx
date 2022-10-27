@@ -125,3 +125,7 @@ export default function CustomTab(props: Props) {
         </Tabs>
     )
 }
+
+CustomTab.defaultProps = {
+    removeable: false
+};

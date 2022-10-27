@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import style from './step.module.scss'
 import { postSolution, postTemplate, putSolution, putTemplate } from 'services/fetchFile'
 import CustomTab from 'components/tab/customTab'
-import { postStepTemplate, postStepSolution } from 'services/fetchStep'
+import { postStepTemplate, postStepSolution, putStep } from 'services/fetchStep'
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
@@ -53,7 +53,7 @@ export default function Step(props: Props) {
             }}
 
         >
-            <i className={style.icon + ' bi bi-file-earmark-plus-fill'}></i>
+            <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
             Save
         </button>
     )
@@ -89,16 +89,38 @@ export default function Step(props: Props) {
             }}
 
         >
-            <i className={style.icon + ' bi bi-file-earmark-plus-fill'}></i>
+            <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
             Save
         </button>
     )
+
+    const saveDescription = (description: string) => {
+        const promise = new Promise((resolve, reject) => {
+            putStep(props.step.id, {description, lessonId: props.step.lessonId})
+                .then(v => {
+                    console.log(v)
+                    resolve('Successfull')
+                })
+                .catch(e => {
+                    console.log(e)
+                    reject('Failed')
+                })
+        });
+        toast.promise(
+            promise,
+            {
+                pending: 'Saving',
+                success: 'Saved!',
+                error: "Couldn't save, please try again!"
+            }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+        )
+    }
 
     const descriptionTab = {
         name: 'Description',
         content: (
             <div data-cy='description'>
-                <MarkdownEditor></MarkdownEditor>
+                <MarkdownEditor text={props.step.description} save={saveDescription}></MarkdownEditor>
             </div>
         )
     }

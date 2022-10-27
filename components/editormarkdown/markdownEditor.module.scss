@@ -1,0 +1,30 @@
+@use '../../styles/themes/theme-1.scss' as theme;
+
+.customButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    width: 120px;
+
+    background-color: theme.$background-2;
+    color: theme.$text;
+
+    border: none;
+    border-radius: 10px;
+    border: 1px solid theme.$background-2;
+
+    margin-bottom: 10px;
+}
+
+.customButton:hover,
+.customButton:active,
+.customButton:focus {
+    border: 1px solid theme.$primary;
+    color: theme.$blue-color;
+}
+
+.icon {
+    padding-right: 13px;
+}
