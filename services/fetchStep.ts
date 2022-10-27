@@ -3,7 +3,7 @@ import { Step, StepDTO, StepNested } from "../models/steps";
 import { Template, TemplateRawDTO } from '../models/templates';
 import { Solution, SolutionRawDTO } from 'models/solutions';
 
-const BASE_URL = `${process.env.BACK_URL}/api/v1/steps`
+const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1/steps`
 
 export const getStep = async (id: string) => {
     const { data, status } = await axios.get<StepNested>(`${BASE_URL}/${id}`)
