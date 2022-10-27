@@ -97,19 +97,19 @@ ContextMenuTab.tabsRole = 'Tab';
  */
 export default function CustomTab(props: Props) {
     return (
-        <Tabs focusTabOnClick={false}>
+        <Tabs focusTabOnClick={false} selectedTabClassName={style.tabSelected}>
             <div>
                 {props.header}
             </div>
-            <TabList>
+            <TabList className={style.tabList}>
                 {props.removeable ?
                     (props.tabs.map((tab, index) => (
-                        <ContextMenuTab data-cy={`tab-${index}-contextMenu`} key={index} onClick={tab.delete}>
+                        <ContextMenuTab data-cy={`tab-${index}-contextMenu`} className={style.tab} key={index} onClick={tab.delete}>
                             {tab.name}
                         </ContextMenuTab>
                     )))
                     : (props.tabs.map((tab, index) => (
-                        <Tab data-cy={`tab-${index}`} key={index}>
+                        <Tab data-cy={`tab-${index}`} key={index} className={style.tab}>
                             {tab.name}
                         </Tab>
                     )))}

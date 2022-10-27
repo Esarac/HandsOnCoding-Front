@@ -2,20 +2,27 @@
 
 .icon {
     font-size: 12px;
-    padding-left: 5px;
+    padding-left: 10px;
 }
 
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 .btnPrimary {
     color: black;
     background-color: white;
-    border-color: black; /*set the color you want here*/
+    border-color: black;
+    /*set the color you want here*/
     margin-left: 3px;
 }
-.btnPrimary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+
+.btnPrimary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open>.dropdown-toggle.btn-primary {
     color: #fff;
     background-color: white !important;
-    border-color: black; /*set the color you want here*/
+    border-color: black;
+    /*set the color you want here*/
 }
 
 .addButton {
@@ -31,8 +38,6 @@
     border: none;
     border-radius: 10px;
     border: 1px solid theme.$background-2;
-
-    margin-left: 5px;
 }
 
 .addButton:hover,
@@ -40,4 +45,49 @@
 .addButton:focus {
     border: 1px solid theme.$primary;
     color: theme.$blue-color;
+}
+
+.tab {
+    display: inline-block;
+    border: 1px solid transparent;
+    border-bottom: none;
+    bottom: -1px;
+    position: relative;
+    list-style: none;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.tabSelected {
+    background: #202020;
+    border-radius: 5px 5px 0 0;
+    margin-right: 15px;
+    border: none;
+    padding: 10px 20px;
+    transition: all ease-in-out .2s;
+    border-bottom: 6px solid transparent;
+
+    &:after {
+        content: "";
+        position: absolute;
+        height: 5px;
+        left: -4px;
+        right: -4px;
+        bottom: -5px;
+        background: theme.$blue-color;
+      }
+}
+
+.tabPanel {
+    display: none;
+
+    &--selected {
+        display: block;
+    }
+}
+
+.tabList {
+    margin: 0 0 10px;
+    padding: 0;
+    border-bottom: 1px solid rgba(255,255,255,.25);
 }
