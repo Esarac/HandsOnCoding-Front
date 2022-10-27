@@ -2,7 +2,7 @@ import axios from 'axios'
 import { TemplateDTO } from 'models/templates'
 import { SolutionDTO } from 'models/solutions'
 
-const BASE_URL = `${process.env.BACK_URL}/api/v1`
+const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1`
 
 //Template
 const TEMPLATE_BASE_URL = `${BASE_URL}/templates`

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Lesson, LessonNested } from "../models/lessons";
 
-const BASE_URL = `${process.env.BACK_URL}/api/v1/lessons`
+const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1/lessons`
 
 export const getLesson = async (id: string) => {
     const { data, status } = await axios.get<LessonNested>(`${BASE_URL}/${id}`)
