@@ -107,12 +107,4 @@
 
 .menu {
     background-color: theme.$background-2;
-    &:focus {
-        background-color: red;
-        color: red;
-    }
 }
-
-.dropdown-item:focus, .dropdown-item:hover {
-    background-color: #1C2331;
-    color: orange !important;}

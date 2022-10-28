@@ -1,6 +1,4 @@
 import React from "react";
-import "@uiw/react-md-editor/markdown-editor.css";
-import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
 import style from './markdownEditor.module.scss'
 import { useState } from "react";
@@ -42,7 +40,7 @@ export default function MarkdownEditor(props: Props) {
       </button>
       <div data-color-mode="dark">
         {/*// @ts-ignore*/}
-        <MDEditor height={865} value={value} onChange={setValue} />
+        <MDEditor height={854} value={value} onChange={setValue}/>
       </div>
     </div>
   );

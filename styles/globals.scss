@@ -1,6 +1,19 @@
 @use './themes/theme-1' as theme;
 
 @import "node_modules/bootstrap/scss/bootstrap";
+@import "@uiw/react-md-editor/markdown-editor.css";
+@import "@uiw/react-markdown-preview/markdown.css";
+
+
+[data-color-mode*='dark'] .wmde-markdown,
+[data-color-mode*='dark'] .wmde-markdown-var,
+body[data-color-mode*='dark'] {
+  color-scheme: dark;
+  --color-canvas-default: #202020;
+  --color-canvas-subtle: #181818;
+  --color-border-default: rgba(255,255,255,.25);
+  --color-border-muted: rgba(255,255,255,.25);
+}
 
 html,
 body {
