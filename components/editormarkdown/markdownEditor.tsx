@@ -37,7 +37,7 @@ export default function MarkdownEditor(props: Props) {
   return (
     <div>
       <button className={style.customButton} onClick={() => props.save(value)}>
-        <i className={style.icon + ' bi bi-markdown-fill'}></i>
+        <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
         Save
       </button>
       <div data-color-mode="dark">

@@ -83,8 +83,8 @@ const ContextMenuTab: ReactTabsFunctionComponent<TabProps> = ({ children, onClic
         <Dropdown as={ButtonGroup}>
             {children}
             {otherProps.selected && <Dropdown.Toggle as={CustomToggle} />}
-            <Dropdown.Menu>
-                <Dropdown.Item onClick={onClick}>Delete</Dropdown.Item>
+            <Dropdown.Menu className={style.menu}>
+                <Dropdown.Item className={style.item} onClick={onClick}>Delete</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
     </Tab>

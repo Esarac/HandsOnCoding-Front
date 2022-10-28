@@ -64,8 +64,7 @@
     margin-right: 15px;
     border: none;
     padding: 10px 20px;
-    transition: all ease-in-out .2s;
-    border-bottom: 6px solid transparent;
+    border-bottom: 5px solid transparent;
 
     &:after {
         content: "";
@@ -91,3 +90,24 @@
     padding: 0;
     border-bottom: 1px solid rgba(255,255,255,.25);
 }
+
+.item {
+    color: white;
+
+    &:hover {
+        background-color: theme.$background-2;
+        color: theme.$blue-color;
+    }
+}
+
+.menu {
+    background-color: theme.$background-2;
+    &:focus {
+        background-color: red;
+        color: red;
+    }
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: #1C2331;
+    color: orange !important;}
