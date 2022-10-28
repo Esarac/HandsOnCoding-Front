@@ -3,12 +3,17 @@
 .icon {
     font-size: 12px;
     padding-left: 10px;
+    color: theme.$text;
+
+    &:hover {
+        color: theme.$blue-color;
+    }
 }
 
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 .btnPrimary {
     color: black;
-    background-color: white;
+    background-color: theme.$text;
     border-color: black;
     /*set the color you want here*/
     margin-left: 3px;
@@ -20,7 +25,7 @@
 .btn-primary.active,
 .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: white !important;
+    background-color: theme.$text !important;
     border-color: black;
     /*set the color you want here*/
 }
@@ -92,7 +97,7 @@
 }
 
 .item {
-    color: white;
+    color: theme.$text;
 
     &:hover {
         background-color: theme.$background-2;
