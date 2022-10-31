@@ -1,19 +1,20 @@
 import axios from 'axios'
-import { Step, StepDTO, StepNested } from "../models/steps";
-import { Template, TemplateRawDTO } from '../models/templates';
-import { Solution, SolutionRawDTO } from 'models/solutions';
+import { Step, StepDTO, StepNested } from "../models/step";
+import { File, FileRawDTO } from '../models/file';
+import { Test, TestRawDTO } from '../models/test';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1/steps`
 
-export const getStep = async (id: string) => {
-    const { data, status } = await axios.get<StepNested>(`${BASE_URL}/${id}`)
-    
+// Step
+export const getStep = async (stepId: string) => {
+    const { data, status } = await axios.get<StepNested>(`${BASE_URL}/${stepId}`)
+
     return { data, status }
 }
 
 export const getSteps = async () => {
     const { data, status } = await axios.get<Step[]>(`${BASE_URL}`)
-    
+
     return { data, status }
 }
 
@@ -23,26 +24,52 @@ export const postStep = async (step: StepDTO) => {
     return { data, status }
 }
 
-export const putStep = async (id: string, step: StepDTO) => {
-    const { data, status } = await axios.put<Step>(`${BASE_URL}/${id}`, step)
+export const putStep = async (stepId: string, step: StepDTO) => {
+    const { data, status } = await axios.put<Step>(`${BASE_URL}/${stepId}`, step)
 
     return { data, status }
 }
 
-export const deleteStep = async (id: string, force: boolean) => {
-    const { data, status } = await axios.delete<Step>(`${BASE_URL}/${id}?force=${force}`)
+export const deleteStep = async (stepId: string, force: boolean) => {
+    const { data, status } = await axios.delete<Step>(`${BASE_URL}/${stepId}?force=${force}`)
 
     return { data, status }
 }
 
-export const postStepTemplate = async (id: string, template: TemplateRawDTO)=>{
-    const { data, status} = await axios.post<Template>(`${BASE_URL}/${id}/template`, template)
-    
+// Template
+export const postTemplate = async (stepId: string, template: FileRawDTO) => {
+    const { data, status } = await axios.post<File>(`${BASE_URL}/${stepId}/template`, template)
+
     return { data, status }
 }
 
-export const postStepSolution = async (id: string, solution: SolutionRawDTO)=>{
-    const { data, status} = await axios.post<Solution>(`${BASE_URL}/${id}/solution`, solution)
-    
+export const postSolution = async (stepId: string, solution: FileRawDTO) => {
+    const { data, status } = await axios.post<File>(`${BASE_URL}/${stepId}/solution`, solution)
+
+    return { data, status }
+}
+
+// Tests
+export const getTests = async (stepId: string) => {
+    const { data, status } = await axios.get<File>(`${BASE_URL}/${stepId}/tests`)
+
+    return { data, status }
+}
+
+export const postTest = async (stepId: string, test: Test) => {
+    const { data, status } = await axios.post<File>(`${BASE_URL}/${stepId}/tests`, test)
+
+    return { data, status }
+}
+
+export const putTest = async (stepId: string, testId: string, test: Test) => {
+    const { data, status } = await axios.put<File>(`${BASE_URL}/${stepId}/tests/${testId}`, test)
+
+    return { data, status }
+}
+
+export const deleteTest = async (stepId: string, testId: string) => {
+    const { data, status } = await axios.delete<File>(`${BASE_URL}/${stepId}/tests/${testId}`)
+
     return { data, status }
 }

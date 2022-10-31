@@ -1,18 +1,14 @@
 import Ide from 'components/ide/ide'
-import { SolutionDTO } from 'models/solutions'
-import { StepNested } from 'models/steps'
-import { TemplateRawDTO } from 'models/templates'
-import { SolutionRawDTO } from 'models/solutions'
+import { StepNested } from 'models/step'
+import { FileRawDTO } from 'models/file'
 import React, { useState } from 'react'
 import style from './step.module.scss'
-import { postSolution, postTemplate, putSolution, putTemplate } from 'services/fetchFile'
 import CustomTab from 'components/tab/customTab'
-import { postStepTemplate, postStepSolution, putStep } from 'services/fetchStep'
+import { postTemplate, postSolution, putStep } from 'services/fetchStep'
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { reject } from 'cypress/types/lodash'
 import MarkdownEditor from 'components/editormarkdown/markdownEditor'
 
 type Props = {
@@ -27,12 +23,12 @@ export default function Step(props: Props) {
         <button className={style.customButton}
             data-cy='saveBtn'
             onClick={(e) => {
-                const template: TemplateRawDTO = {
+                const template: FileRawDTO = {
                     name: (typeof props.step.template?.name === 'undefined') ? 'main.py' : props.step.template?.name,
                     content: codeTemplate
                 }
                 const promise = new Promise((resolve, reject) => {
-                    postStepTemplate(props.step.id, template)
+                    postTemplate(props.step.id, template)
                         .then(v => {
                             console.log(v)
                             resolve('Successfull')
@@ -62,13 +58,13 @@ export default function Step(props: Props) {
         <button className={style.customButton}
             data-cy='saveBtn'
             onClick={(e) => {
-                const solution: SolutionRawDTO = {
+                const solution: FileRawDTO = {
                     name: (typeof props.step.solution?.name === 'undefined') ? 'main.py' : props.step.solution?.name,
                     content: codeSolution,
                 }
 
                 const promise = new Promise((resolve, reject) => {
-                    postStepSolution(props.step.id, solution)
+                    postSolution(props.step.id, solution)
                         .then(v => {
                             console.log(v)
                             resolve('Successfull')
