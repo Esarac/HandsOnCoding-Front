@@ -1,10 +1,13 @@
 import React from 'react'
+import style from './header.module.scss'
 
 function Header() {
   return (
-    <div>
-        <h1>HandsOnCoding</h1>
-    </div>
+    <nav className={"navbar navbar-dark"} style={{backgroundColor:'#202020'}}>
+      <span className={"navbar-brand mx-3 h1"}>
+        HandsOnCoding
+      </span>
+    </nav>
   )
 }
 

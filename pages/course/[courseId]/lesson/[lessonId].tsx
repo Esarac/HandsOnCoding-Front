@@ -13,6 +13,7 @@ import Link from 'next/link'
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Breadcrumb } from 'react-bootstrap'
 
 //Component
 interface Props extends Lesson {
@@ -103,7 +104,7 @@ export default function LessonPage(props: Props) {
 
     return (
         <div>
-            <ToastContainer limit={8} draggablePercent={80} theme="dark"/>
+            <ToastContainer limit={8} draggablePercent={80} theme="dark" />
             <CustomTab
                 data-cy={`step-tabs`}
                 tabs={steps.map((step, index) => {
@@ -118,18 +119,18 @@ export default function LessonPage(props: Props) {
                     }
                 })}
                 header={
-                    (<div>
+                    (<div className='py-2'>
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb">
+                                <li className="breadcrumb-item"><Link href="/">Home</Link></li>
+                                <li className="breadcrumb-item"><Link href={`/course/${props.courseId}`}>{props.courseId}</Link></li>
+                                <li className="breadcrumb-item active" aria-current="page">{props.id}</li>
+                            </ol>
+                        </nav>
                         <Head>
                             <title>{"Lesson - " + props.title}</title>
                         </Head>
                         <h1>{props.title}</h1>
-                        <div>
-                            <div className={styles.button}>
-                                <Link href="/">
-                                    Go back
-                                </Link>
-                            </div>
-                        </div>
                     </div >)}
                 removeable={true}
                 create={addStep}

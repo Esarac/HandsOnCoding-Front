@@ -1,0 +1,5 @@
+@use '../../styles/themes/theme-1.scss' as theme;
+
+.navbar{
+    background-color: theme.$background-2;
+}

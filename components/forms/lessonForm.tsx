@@ -23,10 +23,6 @@ export default function LessonForm(props: Props) {
     const [endDefault, setEndDefault] = useState<boolean>(true)
     const [end, setEnd] = useState<Date>(new Date(""))
 
-    useState(() => {
-        console.log({ title, language, start: { startDefault, start }, end: { endDefault, end } })
-    })
-
     const save = () => {
         if (!title) {
             console.log("Title error")
