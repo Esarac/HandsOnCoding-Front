@@ -1,25 +1,20 @@
-import { Test } from 'models/test'
 import React from 'react'
+import { useState } from 'react'
+import { Test } from 'models/test'
 import { Oval } from 'react-loader-spinner'
 import style from './testView.module.scss'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 type Props = {
-    testElement: TestElement
-}
-
-interface TestElement {
     test: Test
-    state: number
-
 }
 
-interface State {
+interface Icon {
     icon: JSX.Element
 }
 
-const icons: { [name: string]: State } = {
+const icons: { [name: string]: Icon } = {
     // 0 -> none
     0: { icon: <i className={style.none + ' bi bi-circle'}></i> },
     // 1 -> running
@@ -45,14 +40,30 @@ const icons: { [name: string]: State } = {
 }
 
 function TestView(props: Props) {
+    const [icon, setIcon] = useState<number>(0)
+
+    const changeIcon = (value: number) => setIcon(value)
+
+    const running = () => {
+        changeIcon(1)
+    }
+
+    const succesful = () => {
+        changeIcon(2)
+    }
+
+    const fail = () => {
+        changeIcon(3)
+    }
+
     return (
         <div className={style.container}>
             <Row className={style.aligner + ' align-items-center'}>
                 <Col xs='auto'>
-                    {icons[props.testElement.state].icon}
+                    {icons[icon].icon}
                 </Col>
                 <Col xs='auto'>
-                    {props.testElement.test.message}
+                    {props.test.message}
                 </Col>
             </Row>
         </div>

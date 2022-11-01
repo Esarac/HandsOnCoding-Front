@@ -28,3 +28,13 @@
     border: none;
     color: theme.$text;
 }
+
+.container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px
+}
+
+.buttonSize {
+    min-width: 250px;
+}

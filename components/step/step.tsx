@@ -8,7 +8,6 @@ import { postTemplate, postSolution, putStep } from 'services/fetchStep'
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import MarkdownEditor from 'components/editormarkdown/markdownEditor'
 import TestList from 'components/testList/testList'
 

@@ -1,14 +1,33 @@
 import TestView from 'components/testView/testView'
 import { Test } from 'models/test'
 import React from 'react'
+import { useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import style from './testList.module.scss'
+import { toast } from 'react-toastify';
+import { Modal } from 'components/modal/modal'
+import TestForm from 'components/forms/testForm'
 
 type Props = {
     tests: Test[]
 }
 
 function TestList(props: Props) {
+    const [tests, setTest] = useState<Test[]>(props.tests)
+    const [showModal, setShowModal] = useState<boolean>(false)
+
+    const addTest = () => {
+        
+    }
+
+    const save = () => {
+        console.log("SAVED")
+    }
+
+    const cancel = () => {
+        setShowModal(false)
+    }
+
     return (
         <div>
             <button className={style.customButton}>
@@ -16,15 +35,18 @@ function TestList(props: Props) {
                 Run
             </button>
             <Stack gap={2}>
-                {props.tests.map((test, index) => (
-                    <TestView key={index} testElement={{ test: test, state: 0 }}></TestView>
+                {tests.map((test, index) => (
+                    <TestView key={index} test={test}></TestView>
                 ))}
             </Stack>
             <div className={style.container}>
-                <button className={style.customButton}>
+                <button className={style.customButton} onClick={() => setShowModal(true)}>
                     <i className={'bi bi-plus'}></i>
                 </button>
             </div>
+            <Modal show={showModal} title='New Test' onClose={() => setShowModal(false)}>
+                <TestForm onSave={save} onCancel={cancel}></TestForm>
+            </Modal>
         </div>
     )
 }
