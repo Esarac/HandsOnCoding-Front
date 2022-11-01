@@ -19,11 +19,11 @@ interface State {
     icon: JSX.Element
 }
 
-const states: string[] = ['none', 'running', 'successful', 'fail']
-
 const icons: { [name: string]: State } = {
-    'none': { icon: <i className={style.none + ' bi bi-circle'}></i> },
-    'running': {
+    // 0 -> none
+    0: { icon: <i className={style.none + ' bi bi-circle'}></i> },
+    // 1 -> running
+    1: {
         icon: <Oval
             height={17}
             width={17}
@@ -38,8 +38,10 @@ const icons: { [name: string]: State } = {
 
         />
     },
-    'successful': { icon: <i className={style.check + ' bi bi-check-circle-fill'}></i> },
-    'fail': { icon: <i className={style.error + ' bi bi-exclamation-circle-fill'}></i> }
+    // 2 -> successful
+    2: { icon: <i className={style.check + ' bi bi-check-circle-fill'}></i> },
+    // 3 -> fail
+    3: { icon: <i className={style.error + ' bi bi-exclamation-circle-fill'}></i> }
 }
 
 function TestView(props: Props) {
@@ -47,7 +49,7 @@ function TestView(props: Props) {
         <div className={style.container}>
             <Row className={style.aligner + ' align-items-center'}>
                 <Col xs='auto'>
-                    {icons[states[props.testElement.state]].icon}
+                    {icons[props.testElement.state].icon}
                 </Col>
                 <Col xs='auto'>
                     {props.testElement.test.message}
