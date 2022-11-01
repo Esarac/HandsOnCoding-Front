@@ -126,19 +126,7 @@ export default function Step(props: Props) {
         name: 'Test',
         content: (
             <div data-cy='test'>
-                <TestList tests={[{
-                    id: 'string',
-                    message: 'Example test, yes no',
-                    input: '1',
-                    output: '2',
-                    stepId: '1',
-                }, {
-                    id: 'string',
-                    message: 'Example test, yes no 222',
-                    input: '1',
-                    output: '2',
-                    stepId: '1',
-                }]}></TestList>
+                <TestList stepId={props.step.id} tests={props.step.tests}></TestList>
             </div>
         )
     }

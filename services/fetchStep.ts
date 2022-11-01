@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Step, StepDTO, StepNested } from "../models/step";
 import { File, FileRawDTO } from '../models/file';
-import { Test, TestRawDTO } from '../models/test';
+import { Test, TestDTO, TestRawDTO } from '../models/test';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1/steps`
 
@@ -51,13 +51,13 @@ export const postSolution = async (stepId: string, solution: FileRawDTO) => {
 
 // Tests
 export const getTests = async (stepId: string) => {
-    const { data, status } = await axios.get<File>(`${BASE_URL}/${stepId}/tests`)
+    const { data, status } = await axios.get<Test[]>(`${BASE_URL}/${stepId}/tests`)
 
     return { data, status }
 }
 
-export const postTest = async (stepId: string, test: Test) => {
-    const { data, status } = await axios.post<File>(`${BASE_URL}/${stepId}/tests`, test)
+export const postTest = async (stepId: string, test: TestRawDTO) => {
+    const { data, status } = await axios.post<Test>(`${BASE_URL}/${stepId}/tests`, test)
 
     return { data, status }
 }

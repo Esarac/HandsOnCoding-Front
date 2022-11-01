@@ -7,8 +7,10 @@ import style from './testList.module.scss'
 import { toast } from 'react-toastify';
 import { Modal } from 'components/modal/modal'
 import TestForm from 'components/forms/testForm'
+import { getTests } from 'services/fetchStep';
 
 type Props = {
+    stepId: string
     tests: Test[]
 }
 
@@ -17,11 +19,16 @@ function TestList(props: Props) {
     const [showModal, setShowModal] = useState<boolean>(false)
 
     const addTest = () => {
-        
+
     }
 
     const save = () => {
-        console.log("SAVED")
+        getTests(props.stepId)
+            .then((res) => {
+                setTest(res.data)
+            })
+            .catch((e) => console.log(e))
+        setShowModal(false)
     }
 
     const cancel = () => {
@@ -45,7 +52,7 @@ function TestList(props: Props) {
                 </button>
             </div>
             <Modal show={showModal} title='New Test' onClose={() => setShowModal(false)}>
-                <TestForm onSave={save} onCancel={cancel}></TestForm>
+                <TestForm stepId={props.stepId} onSave={save} onCancel={cancel}></TestForm>
             </Modal>
         </div>
     )
