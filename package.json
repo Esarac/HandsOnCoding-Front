@@ -26,6 +26,7 @@
     "react-bootstrap": "^2.5.0",
     "react-bootstrap-sweetalert": "^5.2.0",
     "react-dom": "18.2.0",
+    "react-loader-spinner": "^5.3.4",
     "react-tabs": "^5.1.0",
     "react-toastify": "^9.0.8"
   },

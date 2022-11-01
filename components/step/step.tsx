@@ -10,6 +10,7 @@ import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MarkdownEditor from 'components/editormarkdown/markdownEditor'
+import TestList from 'components/testList/testList'
 
 type Props = {
     step: StepNested
@@ -92,7 +93,7 @@ export default function Step(props: Props) {
 
     const saveDescription = (description: string) => {
         const promise = new Promise((resolve, reject) => {
-            putStep(props.step.id, {description, lessonId: props.step.lessonId})
+            putStep(props.step.id, { description, lessonId: props.step.lessonId })
                 .then(v => {
                     console.log(v)
                     resolve('Successfull')
@@ -125,7 +126,19 @@ export default function Step(props: Props) {
         name: 'Test',
         content: (
             <div data-cy='test'>
-                <h1>Test</h1>
+                <TestList tests={[{
+                    id: 'string',
+                    message: 'Example test, yes no',
+                    input: '1',
+                    output: '2',
+                    stepId: '1',
+                }, {
+                    id: 'string',
+                    message: 'Example test, yes no 222',
+                    input: '1',
+                    output: '2',
+                    stepId: '1',
+                }]}></TestList>
             </div>
         )
     }

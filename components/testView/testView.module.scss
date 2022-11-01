@@ -1,0 +1,29 @@
+@use '../../styles/themes/theme-1.scss' as theme;
+
+.container {
+    background-color: theme.$background-2;
+    display: flex;
+    height: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.aligner {
+    margin-left: 5px;
+    display: flex;
+    align-content: center;
+}
+
+
+.check {
+    color: #07bc0c;
+}
+
+.error {
+    color: #e74c3c
+}
+
+.none {
+    color: #585858
+}

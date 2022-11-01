@@ -82,7 +82,6 @@ export default function Ide(props: Props) {
                                 promise,
                                 {
                                     pending: 'Running',
-                                    success: 'Code executed successfully!',
                                     error: 'Execution error, please try again!'
                                 }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
                             )
