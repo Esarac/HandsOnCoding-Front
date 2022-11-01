@@ -2,17 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { Lesson } from 'models/lessons'
-import { StepNested } from 'models/steps'
+import { StepNested, StepDTO } from 'models/step'
 import { deleteStep, getStep, postStep } from '../../../../services/fetchStep'
 import { getLesson, getLessons } from 'services/fetchLesson'
 import CustomTab from 'components/tab/customTab'
-import { StepDTO } from 'models/steps'
 import Step from 'components/step/step'
 import styles from '../../../../styles/lesson.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
-import Router from 'next/router'
-//import 'bootstrap/dist/css/bootstrap.min.css';
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

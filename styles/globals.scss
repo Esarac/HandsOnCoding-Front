@@ -1,5 +1,6 @@
 @use './themes/theme-1' as theme;
 
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "@uiw/react-md-editor/markdown-editor.css";
 @import "@uiw/react-markdown-preview/markdown.css";

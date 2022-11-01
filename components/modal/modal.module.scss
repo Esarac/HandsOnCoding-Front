@@ -1,0 +1,22 @@
+@use '../../styles/themes/theme-1.scss' as theme;
+
+
+.modal{
+    .modalHeader{
+        background-color: transparent;
+        border-bottom-width: 0px;
+    }
+
+    .modalBody{
+        background-color: transparent;
+        border-width: 0px;
+    }
+
+    .modalFooter{
+        background-color: transparent;
+    }
+}
+
+.modalContent{
+    background-color: theme.$background-2;
+}

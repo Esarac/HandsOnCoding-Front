@@ -1,12 +1,9 @@
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'
 import style from './tab.module.scss'
 import React from 'react'
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { ReactTabsFunctionComponent, TabProps } from 'react-tabs';
-import { StepNested } from 'models/steps';
-import camelize from 'utils/camelize';
 
 
 type Props = {

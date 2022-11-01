@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Lesson, LessonNested } from "../models/lessons";
+import { Lesson, LessonDTO, LessonNested } from "../models/lessons";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1/lessons`
 
@@ -15,13 +15,13 @@ export const getLessons = async () => {
     return { data, status }
 }
 
-export const postLesson = async (lesson: Lesson) => {
+export const postLesson = async (lesson: LessonDTO) => {
     const { data, status } = await axios.post<Lesson>(`${BASE_URL}`, lesson)
 
     return { data, status }
 }
 
-export const putLesson = async (id: string, lesson: Lesson) => {
+export const putLesson = async (id: string, lesson: LessonDTO) => {
     const { data, status } = await axios.put<Lesson>(`${BASE_URL}/${id}`, lesson)
 
     return { data, status }
