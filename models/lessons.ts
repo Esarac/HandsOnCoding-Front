@@ -46,8 +46,8 @@ export interface LessonRawDTO extends Omit<LessonDTO, 'courseId'>{}
  *          - courseId
  */
 export interface LessonDTO extends Omit<Lesson, 'id' | 'start' | 'end'>{
-    start?: string;
-    end?: string;
+    start?: Date;
+    end?: Date | null;
 };
 
 /**

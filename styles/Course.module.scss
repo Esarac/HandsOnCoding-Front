@@ -1,37 +1,23 @@
 @use './themes/theme-1.scss' as theme;
 
-.container {
-  padding: 0 2rem;
-}
-
 .card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
+  background-color: theme.$background-1;
+  border: 2px solid theme.$background-3;
+}
+
+.cardTitle a {
   text-decoration: none;
-  background-color: theme.$background-2;
-  border: 1px solid theme.$background-2;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
-}
+  color: theme.$text;
 
-.card:hover,
-.card:focus,
-.card:active {
-  border-color: theme.$primary;
-}
+  &:hover{
+    color:theme.$primary;
+    text-decoration: underline;
+  }
 
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
-}
-
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
+  &:active{
+    color:theme.$blue-color;
+    text-decoration: underline;
+  }
 }
 
 .addButton {
@@ -47,4 +33,27 @@
   border: none;
   border-radius: 10px;
   border: 1px solid theme.$background-2;
+}
+
+.customButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+  width: 120px;
+
+  background-color: theme.$background-2;
+  color: theme.$text;
+
+  border: none;
+  border-radius: 10px;
+  border: 1px solid theme.$background-2;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border: 1px solid theme.$primary;
+    color: theme.$blue-color;
+  }
 }

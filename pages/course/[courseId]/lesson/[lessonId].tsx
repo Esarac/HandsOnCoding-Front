@@ -111,7 +111,7 @@ export default function LessonPage(props: Props) {
                         name: 'Step ' + (index + 1),
                         content: (
                             <div data-cy={`step-${index}`}>
-                                <Step step={step}></Step>
+                                <Step step={step} languageName={props.languageName}></Step>
                             </div>
                         ),
                         delete: () => deleteTab(step)

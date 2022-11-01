@@ -2,12 +2,14 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Link from 'next/link'
 import styles from 'styles/Course.module.scss'
 
-import { getLessons, postLesson } from 'services/fetchLesson'
+import { deleteLesson, getLanguages, getLessons } from 'services/fetchLesson'
 import { Lesson } from 'models/lessons'
 import { ParsedUrlQuery } from 'querystring'
 import { Modal } from 'components/modal/modal'
 import { useState } from 'react'
-import { Button, Col, Form, FormGroup, Row } from 'react-bootstrap'
+import { Button, Card } from 'react-bootstrap'
+import LessonForm from 'components/forms/lessonForm'
+import { Language } from 'models/language'
 
 interface Props {
   id: string
@@ -16,130 +18,90 @@ interface Props {
 
 export default function Course(props: Props) {
   const [lessons, setLessons] = useState<Lesson[]>(props.lessons)
+  const [languages, setLanguages] = useState<Language[]>([])
+
+  useState(()=>{
+    getLanguages()
+    .then(({data}) => setLanguages(data))
+  })
+
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const closeModal = () => setShowModal(false)
+  const openModal = () => setShowModal(true)
+
+  const updateLessons = () => {
+    getCourseLessons(props.id)
+      .then((resLessons) => {
+        setLessons(resLessons)
+      })
+      .catch((e) => console.log(e))
+  }
+
+  const delLesson = (id: string) => {
+    deleteLesson(id)
+    .then(({data, status})=>{
+      updateLessons();
+    })
+    .catch((e) => console.log(e))
+  }
 
   const lessonCards = lessons.map((lesson, index) => {
     return (
-      <Link
-        href={`/course/${lesson.courseId}/lesson/${lesson.id}`}
-        key={index}
-      >
-        <div
-          data-cy={`lesson-${index}`}
-          className={styles.card}>
-          <h2>{lesson.title}</h2>
-          <p>
-            <a>{lesson.languageName}</a>
-          </p>
-        </div>
-      </Link>
+      <div className='col-12 col-md-6 col-lg-4' key={index}>
+        <Card
+          className={styles.card}
+        >
+          <Card.Body>
+            <Card.Title className={styles.cardTitle}>
+              <Link
+                href={`/course/${lesson.courseId}/lesson/${lesson.id}`}
+                data-cy={`lesson-${index}`}
+                style={{textDecoration:'none'}}
+              >
+                {lesson.title}
+              </Link>
+            </Card.Title>
+            <Card.Text>
+              {lesson.languageName}
+              <Button
+                data-cy={`tab-add`}
+                className={styles.customButton + " mt-3"}
+                onClick={()=>delLesson(lesson.id)}
+              >
+                <i className='bi bi-trash pe-2'></i>
+                Delete
+              </Button>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      </div>
     )
   })
 
-  //Modal
-  const [showModal, setShowModal] = useState<boolean>(false)
-
-  const [startDefault, setStartDefault] = useState<boolean>(false)
-  const [endDefault, setEndDefault] = useState<boolean>(false)
-
-  const [title, setTitle] = useState<string>("")
-  const [language, setLanguage] = useState<string>("")
-  const [start, setStart] = useState<string>("")
-  const [end, setEnd] = useState<string>("")
-
-  const modalButtons = [
-    <Button onClick={() => closeModal()}>Cancel</Button>,
-    <Button onClick={() => saveLesson()}>Create</Button>
-  ]
-
-  const closeModal = () => {
-    setShowModal(false)
-    resetValues()
-  }
-
-  const saveLesson = () => {
-    postLesson({
-      title,
-      languageName:language,
-      start: startDefault? undefined : new Date(start).toISOString(),
-      end: endDefault? undefined : new Date(end).toISOString(),
-      courseId:props.id})
-      .then(({ data, status }) => {
-        closeModal()
-        
-        getCourseLessons(props.id)
-        .then(setLessons)
-        .catch(e=>console.log(e))
-      })
-      .catch(e=>console.log(e))
-  }
-
-  const resetValues = () => {
-    setTitle("")
-    setLanguage("")
-
-    setStartDefault(true)
-    setStart("")
-
-    setEndDefault(true)
-    setEnd("")
-  }
-  //...
-
   return (
-    <div className={styles.container}>
-      {lessonCards}
-      <Button data-cy={`tab-add`} className={styles.addButton + " bi bi-plus"} onClick={() => setShowModal(true)} />
+    <div className='container'>
+      <div className='row g-2 py-2'>
+        {lessonCards}
+      </div>
+      <Button
+        data-cy={`tab-add`}
+        className={styles.addButton + " bi bi-plus"}
+        onClick={openModal}
+      />
       <Modal
         show={showModal}
         title="New Lesson"
-        onClose={() => closeModal()}
-        buttons={modalButtons}
+        onClose={closeModal}
       >
-        <Form>
-          <Form.Group className='py-1'>
-            <Form.Label>Title</Form.Label>
-            <Form.Control type="text" placeholder="Enter the title" onChange={(e) => setTitle(e.target.value)} />
-          </Form.Group>
-          <Form.Group className='py-1'>
-            <Form.Label>Language</Form.Label>
-            <Form.Select onChange={(e) => setLanguage(e.target.value)}>
-              <option value="python">python</option>
-              <option value="java">java</option>
-              <option value="javascript">javascript</option>
-              <option value="cpp">c++</option>
-            </Form.Select>
-          </Form.Group>
-          <Row className='py-1'>
-            <Col>
-              <Form.Group>
-                <Form.Label>Start</Form.Label>
-                <Form.Control type="date" disabled={startDefault} onChange={(e)=>setStart(e.target.value)}/>
-                <Form.Check
-                  type="checkbox"
-                  label="Default"
-                  checked={startDefault}
-                  onChange={(e) => {
-                    //@ts-ignore
-                    setStartDefault(e.target.checked)
-                  }} />
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group>
-                <Form.Label>End</Form.Label>
-                <Form.Control type="date" disabled={endDefault} onChange={(e)=>setEnd(e.target.value)}/>
-                <Form.Check
-                  type="checkbox"
-                  label="Default"
-                  checked={endDefault}
-                  onChange={(e) => {
-                    //@ts-ignore
-                    setEndDefault(e.target.checked)
-                  }} />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Form>
+        <LessonForm
+          courseId={props.id}
+          onSave={()=>{
+            updateLessons()
+            closeModal()
+          }}
+          languages={languages}
+          onCancel={closeModal}
+        />
       </Modal>
     </div>
   )
@@ -167,7 +129,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   //Es con lesson, pero por ahora lo hacemos con step
   const { courseId } = context.params as Context
 
-  const lessons= await getCourseLessons(courseId)
+  const lessons = await getCourseLessons(courseId)
 
   return {
     props: {
@@ -177,7 +139,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 }
 
-export const getCourseLessons = async (courseId: string) => {
+const getCourseLessons = async (courseId: string) => {
   const { data: lessons, status } = await getLessons()
 
   return lessons.filter((lesson) => lesson.courseId === courseId)

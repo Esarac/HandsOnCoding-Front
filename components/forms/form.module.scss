@@ -1,0 +1,30 @@
+@use '../../styles/themes/theme-1.scss' as theme;
+
+.input, .input:focus{
+    background-color: theme.$background-2;
+    border: 0px;
+    color: theme.$text;
+
+    &[type=date]:disabled{
+        color: transparent;
+        background-color: theme.$background-1;
+
+        &.start::before{
+            color: white;
+            font-style: italic;
+            content: "Today";
+        }
+
+        &.end::before{
+            color: white;
+            font-style: italic;
+            content: "Never";
+        }
+    }
+}
+
+.select{
+    background-color: theme.$background-2;
+    border: none;
+    color: theme.$text;
+}

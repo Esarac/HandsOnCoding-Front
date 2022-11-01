@@ -14,6 +14,7 @@ import TestList from 'components/testList/testList'
 
 type Props = {
     step: StepNested
+    languageName: string
 }
 
 export default function Step(props: Props) {
@@ -149,7 +150,7 @@ export default function Step(props: Props) {
             <div data-cy='template' style={{ width: '100%', height: '75vh' }}>
                 <Ide
                     onChange={setCodeTemplate}
-                    language='python'
+                    language={props.languageName}
                     saveBtn={saveBtnTemplate}
                     value={props.step.template?.content as string} />
             </div>
@@ -162,7 +163,7 @@ export default function Step(props: Props) {
             <div data-cy='solution' style={{ width: '100%', height: '75vh' }}>
                 <Ide
                     onChange={setCodeSolution}
-                    language='python'
+                    language={props.languageName}
                     saveBtn={saveBtnSolution}
                     value={props.step.solution?.content as string}
                 />
