@@ -5,6 +5,7 @@ import { Oval } from 'react-loader-spinner'
 import style from './testView.module.scss'
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { Button } from 'react-bootstrap'
 
 type Props = {
     test: Test
@@ -54,19 +55,22 @@ function TestView(props: Props) {
                 <Col xs='auto'>
                     {props.test.message}
                 </Col>
-                <Col xs='auto'>
-                    <button
-                        onClick={props.onDelete}
-                    >
-                        Delete
-                    </button>
-                </Col>
                 <Col className='text-truncate'>
                     {props.status.message !== '' && (
-                        <i className='text-muted'>{ props.status.message }</i>
+                        <i className='text-muted'>{props.status.message}</i>
                     )}
                 </Col>
             </Row>
+            <Col>
+                <div className={style.customCol}>
+                    <Button
+                        onClick={props.onDelete}
+                        className={style.deleteButton}
+                    >
+                        <i className="bi bi-x"></i>
+                    </Button>
+                </div>
+            </Col>
         </div>
     )
 }

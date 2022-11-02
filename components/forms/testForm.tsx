@@ -78,11 +78,7 @@ function TestForm(props: Props) {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     className={style.input}
-                    required
                 />
-                <Form.Control.Feedback type="invalid">
-                    Please provide an input.
-                </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className='py-1'>
                 <Form.Label>Output</Form.Label>

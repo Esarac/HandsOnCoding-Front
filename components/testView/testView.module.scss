@@ -27,3 +27,23 @@
 .none {
     color: #585858
 }
+
+.customCol {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height:100%;
+}
+
+.deleteButton {
+    background-color: transparent;
+    border: 0;
+    box-shadow: none; 
+    height: 100%;
+
+    .deleteButton:hover,
+    .deleteButton:active,
+    .deleteButton:focus {
+        color: theme.$blue-color;
+    }
+}
