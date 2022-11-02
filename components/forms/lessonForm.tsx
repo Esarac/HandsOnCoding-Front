@@ -23,27 +23,23 @@ export default function LessonForm(props: Props) {
     const [endDefault, setEndDefault] = useState<boolean>(true)
     const [end, setEnd] = useState<Date>(new Date(""))
 
+    const [validated, setValidated] = useState(false);
+
+    const handleSubmit = (event: { currentTarget: any; preventDefault: () => void; stopPropagation: () => void }) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        else {
+            save()
+            event.preventDefault()
+        }
+
+        setValidated(true)
+    };
+
     const save = () => {
-        if (!title) {
-            console.log("Title error")
-            return
-        }
-
-        if (!language) {
-            console.log("Language error")
-            return
-        }
-
-        if (!startDefault && !isValidDate(start)) {
-            console.log("Start error")
-            return
-        }
-
-        if (!endDefault && !isValidDate(end)) {
-            console.log("End error")
-            return
-        }
-
         postLesson({
             title,
             languageName: language,
@@ -60,10 +56,9 @@ export default function LessonForm(props: Props) {
     const cancel = () => {
         props.onCancel()
     }
-    //...
 
     return (
-        <Form>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className='py-1'>
                 <Form.Label>Title</Form.Label>
                 <Form.Control
@@ -72,7 +67,11 @@ export default function LessonForm(props: Props) {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className={style.input}
+                    required
                 />
+                <Form.Control.Feedback type="invalid">
+                    Please provide a title.
+                </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className='py-1'>
                 <Form.Label>Language</Form.Label>
@@ -99,8 +98,12 @@ export default function LessonForm(props: Props) {
                             disabled={startDefault}
                             onChange={(e) => setStart(new Date(e.target.value))}
                             className={style.input + ' ' + style.start}
+                            required={!startDefault}
                         />
-                        <Form.Check
+                        <Form.Control.Feedback type="invalid">
+                            Please provide a start date.
+                        </Form.Control.Feedback>
+                        <Form.Check 
                             type="checkbox"
                             label="Default"
                             checked={startDefault}
@@ -116,7 +119,11 @@ export default function LessonForm(props: Props) {
                             disabled={endDefault}
                             onChange={(e) => setEnd(new Date(e.target.value))}
                             className={style.input + ' ' + style.end}
+                            required={!endDefault}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            Please provide a end date.
+                        </Form.Control.Feedback>
                         <Form.Check
                             type="checkbox"
                             label="Default"
@@ -139,7 +146,7 @@ export default function LessonForm(props: Props) {
                 <Col>
                     <Button
                         className={styleCourse.customButton + ' m-auto'}
-                        onClick={save}
+                        type='submit'
                     >
                         <i className='bi bi-cloud-plus-fill pe-2'></i>
                         Create
