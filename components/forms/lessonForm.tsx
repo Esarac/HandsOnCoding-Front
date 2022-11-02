@@ -1,7 +1,7 @@
 import { Language } from 'models/language'
 import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import { postLesson } from 'services/fetchLesson'
+import { postLesson } from 'services/courseService'
 import { isValidDate } from 'utils/utils'
 import styleCourse from 'styles/Course.module.scss'
 import style from './form.module.scss'

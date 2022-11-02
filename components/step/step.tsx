@@ -4,7 +4,7 @@ import { FileRawDTO } from 'models/file'
 import React, { useState } from 'react'
 import style from './step.module.scss'
 import CustomTab from 'components/tab/customTab'
-import { postTemplate, postSolution, putStep } from 'services/fetchStep'
+import { postTemplate, postSolution, putStep } from 'services/courseService'
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { toast } from 'react-toastify';
