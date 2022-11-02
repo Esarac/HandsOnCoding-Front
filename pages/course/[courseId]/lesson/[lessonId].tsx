@@ -3,8 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { Lesson } from 'models/lessons'
 import { StepNested, StepDTO } from 'models/step'
-import { deleteStep, getStep, postStep } from '../../../../services/fetchStep'
-import { getLesson, getLessons } from 'services/fetchLesson'
+import { deleteStep, getStep, postStep, getLesson, getLessons } from 'services/courseService'
 import CustomTab from 'components/tab/customTab'
 import Step from 'components/step/step'
 import styles from '../../../../styles/lesson.module.scss'
@@ -119,19 +118,21 @@ export default function LessonPage(props: Props) {
                     }
                 })}
                 header={
-                    (<div className='py-2'>
-                        <nav aria-label="breadcrumb">
-                            <ol className="breadcrumb">
-                                <li className="breadcrumb-item"><Link href="/">Home</Link></li>
-                                <li className="breadcrumb-item"><Link href={`/course/${props.courseId}`}>{props.courseId}</Link></li>
-                                <li className="breadcrumb-item active" aria-current="page">{props.id}</li>
-                            </ol>
-                        </nav>
-                        <Head>
-                            <title>{"Lesson - " + props.title}</title>
-                        </Head>
-                        <h1>{props.title}</h1>
-                    </div >)}
+                    (<div className='px-3'>
+                        <div className='py-2'>
+                            <nav aria-label="breadcrumb">
+                                <ol className="breadcrumb">
+                                    <li className="breadcrumb-item"><Link href="/">Home</Link></li>
+                                    <li className="breadcrumb-item"><Link href={`/course/${props.courseId}`}>{props.courseId}</Link></li>
+                                    <li className="breadcrumb-item active" aria-current="page">{props.id}</li>
+                                </ol>
+                            </nav>
+                            <Head>
+                                <title>{"Lesson - " + props.title}</title>
+                            </Head>
+                            <h1>{props.title}</h1>
+                        </div >
+                    </div>)}
                 removeable={true}
                 create={addStep}
             ></CustomTab>

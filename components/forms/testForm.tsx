@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import styleCourse from 'styles/Course.module.scss'
 import style from './form.module.scss'
-import { postTest } from 'services/fetchStep'
+import { postTest } from 'services/courseService'
 import { toast } from 'react-toastify';
 import SweetAlert from 'react-bootstrap-sweetalert'
 

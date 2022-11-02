@@ -7,7 +7,7 @@ import style from './testList.module.scss'
 import { toast } from 'react-toastify';
 import { Modal } from 'components/modal/modal'
 import TestForm from 'components/forms/testForm'
-import { getTests } from 'services/fetchStep';
+import { getTests } from 'services/courseService';
 
 type Props = {
     stepId: string
