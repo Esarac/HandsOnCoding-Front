@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { Lesson } from 'models/lessons'
+import { Lesson, LessonFull } from 'models/lesson'
 import { StepNested, StepDTO } from 'models/step'
-import { deleteStep, getStep, postStep, getLesson, getLessons } from 'services/courseService'
+import { deleteStep, getStep, postStep, getLesson, getLessons, getCourse, getCourseDefault } from 'services/courseService'
 import CustomTab from 'components/tab/customTab'
 import Step from 'components/step/step'
 import styles from '../../../../styles/lesson.module.scss'
@@ -15,8 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Breadcrumb } from 'react-bootstrap'
 
 //Component
-interface Props extends Lesson {
-    steps: StepNested[]
+interface Props extends LessonFull {
+    courseTitle: string
 };
 
 export default function LessonPage(props: Props) {
@@ -123,8 +123,8 @@ export default function LessonPage(props: Props) {
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb">
                                     <li className="breadcrumb-item"><Link href="/">Home</Link></li>
-                                    <li className="breadcrumb-item"><Link href={`/course/${props.courseId}`}>{props.courseId}</Link></li>
-                                    <li className="breadcrumb-item active" aria-current="page">{props.id}</li>
+                                    <li className="breadcrumb-item"><Link href={`/course/${props.courseId}`}>{props.courseTitle}</Link></li>
+                                    <li className="breadcrumb-item active" aria-current="page">{props.title}</li>
                                 </ol>
                             </nav>
                             <Head>
@@ -166,10 +166,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
     //Es con lesson, pero por ahora lo hacemos con step
     const { lessonId } = context.params as Context
 
-    const lessonNested: Props = await getLessonNested(lessonId)
+    const lessonNested: LessonFull = await getLessonNested(lessonId)
+
+    const {data: course} = await getCourseDefault(lessonNested.courseId)
 
     return {
-        props: lessonNested
+        props: {
+            ...lessonNested,
+            courseTitle: course.title
+        }
     }
 }
 

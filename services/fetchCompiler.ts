@@ -1,10 +1,17 @@
 import axios from "axios";
-import { CompilerInput, CompilerOutput } from "models/compiler";
+import { CodeInput, CodeOutput, CodeTestInput, CodeTestOutput } from "models/compiler";
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_COMPILER_URL}`
 
-export const postCode = async(input: CompilerInput) =>{
-    const {data, status} = await axios.post<CompilerOutput>(`${BASE_URL}/compileInput`, input)
+export const postCode = async(input: CodeInput) =>{
+    const {data, status} = await axios.post<CodeOutput>(`${BASE_URL}/compileInput`, input)
     
     return {data, status};
+}
+
+export const runTest = async(code: CodeInput, input: string, output: string)=>{
+    const inputTest: CodeTestInput = {...code, input, answer: output}
+    const {data, status} = await axios.post<CodeTestOutput>(`${BASE_URL}/judgeInput`, inputTest)
+
+    return {data, status}
 }

@@ -3,7 +3,7 @@ import { Step, StepDTO, StepNested } from "../models/step";
 import { File, FileRawDTO } from '../models/file';
 import { Test, TestRawDTO } from '../models/test';
 import { Course, CourseDTO, CourseNested } from 'models/course';
-import { Lesson, LessonDTO, LessonNested } from 'models/lessons';
+import { Lesson, LessonDTO, LessonNested } from 'models/lesson';
 import { Language } from 'models/language';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BACK_URL}/api/v1`
@@ -22,6 +22,12 @@ const COURSE_BASE_URL = `${BASE_URL}/courses`
 
 export const getCourse = async (courseId: string) => {
     const {data, status} = await axios.get<CourseNested>(`${COURSE_BASE_URL}/${courseId}`)
+
+    return {data, status}
+}
+
+export const getCourseDefault = async (courseId: string) => {
+    const {data, status} = await axios.get<Course>(`${COURSE_BASE_URL}/${courseId}?info=default`)
 
     return {data, status}
 }

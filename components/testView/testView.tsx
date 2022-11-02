@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Test } from 'models/test'
 import { Oval } from 'react-loader-spinner'
@@ -8,6 +8,11 @@ import Row from 'react-bootstrap/Row';
 
 type Props = {
     test: Test
+    status: {
+        icon: number,
+        message: string
+    }
+    onDelete: () => void
 }
 
 interface Icon {
@@ -40,30 +45,26 @@ const icons: { [name: string]: Icon } = {
 }
 
 function TestView(props: Props) {
-    const [icon, setIcon] = useState<number>(0)
-
-    const changeIcon = (value: number) => setIcon(value)
-
-    const running = () => {
-        changeIcon(1)
-    }
-
-    const succesful = () => {
-        changeIcon(2)
-    }
-
-    const fail = () => {
-        changeIcon(3)
-    }
-
     return (
         <div className={style.container}>
             <Row className={style.aligner + ' align-items-center'}>
                 <Col xs='auto'>
-                    {icons[icon].icon}
+                    {icons[props.status.icon].icon}
                 </Col>
                 <Col xs='auto'>
                     {props.test.message}
+                </Col>
+                <Col xs='auto'>
+                    <button
+                        onClick={props.onDelete}
+                    >
+                        Delete
+                    </button>
+                </Col>
+                <Col className='text-truncate'>
+                    {props.status.message !== '' && (
+                        <i className='text-muted'>{ props.status.message }</i>
+                    )}
                 </Col>
             </Row>
         </div>

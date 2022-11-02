@@ -1,4 +1,4 @@
-import { Step } from "./step"
+import { Step, StepFullDTO, StepNested } from "./step"
 
 /**
  * @swagger
@@ -28,6 +28,10 @@ import { Step } from "./step"
  *        - languageName
  */
 export interface LessonRawDTO extends Omit<LessonDTO, 'courseId'>{}
+
+export interface LessonFullDTO extends LessonRawDTO{
+    steps: StepFullDTO[]
+}
 
 /**
  * @swagger
@@ -93,4 +97,8 @@ export interface Lesson{
  */
 export interface LessonNested extends Lesson{
     steps: Step[]
+}
+
+export interface LessonFull extends Lesson{
+    steps: StepNested[]
 }

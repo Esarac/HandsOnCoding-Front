@@ -9,7 +9,7 @@ import { Modal } from 'components/modal/modal'
 import LessonForm from 'components/forms/lessonForm'
 
 import { CourseNested } from 'models/course'
-import { Lesson } from 'models/lessons'
+import { Lesson } from 'models/lesson'
 import { Language } from 'models/language'
 import { deleteLesson, getCourse, getCourses, getLanguages, getLessons } from 'services/courseService'
 

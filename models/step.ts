@@ -1,5 +1,5 @@
-import { File } from "./file"
-import { Test } from "./test"
+import { File, FileRawDTO } from "./file"
+import { Test, TestRawDTO } from "./test"
  
 
 /**
@@ -17,6 +17,12 @@ import { Test } from "./test"
  *        - description
  */
 export interface StepRawDTO extends Omit<StepDTO, 'lessonId'>{};
+
+export interface StepFullDTO extends StepRawDTO{
+    template?: FileRawDTO
+    solution?: FileRawDTO
+    tests: TestRawDTO[]
+}
 
 /**
  * @swagger
