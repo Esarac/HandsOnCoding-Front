@@ -15,6 +15,7 @@ import { deleteLesson, getCourse, getCourses, getLanguages, getLessons } from 's
 
 import styles from 'styles/Course.module.scss'
 import { Resource } from 'models/resource'
+import { ToastContainer, toast } from 'react-toastify';
 
 interface Props extends CourseNested { }
 
@@ -42,16 +43,31 @@ export default function Course(props: Props) {
   }
 
   const delLesson = (id: string) => {
-    deleteLesson(id)
-      .then(({ data, status }) => {
-        refresh();
-      })
-      .catch((e) => console.log(e))
+    const promise = new Promise((resolve, reject) => {
+      deleteLesson(id)
+        .then(({ data, status }) => {
+          refresh()
+          resolve('Successfull')
+        })
+        .catch((e) => {
+          console.log(e)
+          reject('Failed')
+        })
+    });
+    toast.promise(
+      promise,
+      {
+        pending: 'Deleting',
+        success: 'Deleted!',
+        error: "Couldn't delete, please try again!"
+      }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+    )
   }
 
   const lessonCards = lessons.map((lesson, index) => {
     return (
       <div className='col-12 col-md-6 col-lg-4' key={index}>
+        <ToastContainer limit={8} draggablePercent={80} theme="dark" />
         <Card
           className={styles.card}
         >
