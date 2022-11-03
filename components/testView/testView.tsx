@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React from 'react'
 import { Test } from 'models/test'
 import { Oval } from 'react-loader-spinner'
 import style from './testView.module.scss'
