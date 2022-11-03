@@ -48,7 +48,7 @@ const icons: { [name: string]: Icon } = {
 function TestView(props: Props) {
     return (
         <div className={style.container}>
-            <Row className={style.aligner + ' align-items-center'}>
+            <Row className={style.aligner + ' align-items-center w-100'}>
                 <Col xs='auto'>
                     {icons[props.status.icon].icon}
                 </Col>
@@ -60,17 +60,15 @@ function TestView(props: Props) {
                         <i className='text-muted'>{props.status.message}</i>
                     )}
                 </Col>
-            </Row>
-            <Col>
-                <div className={style.customCol}>
+                <Col xs='auto' className='h-100 p-0'>
                     <Button
                         onClick={props.onDelete}
-                        className={style.deleteButton}
+                        className={style.deleteButton + ' w-100'}
                     >
                         <i className="bi bi-x"></i>
                     </Button>
-                </div>
-            </Col>
+                </Col>
+            </Row>
         </div>
     )
 }

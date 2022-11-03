@@ -58,8 +58,8 @@ function TestList(props: Props) {
                 }
             }
             catch(e){
-                test.status.icon = 1
-                test.status.message = 'error'
+                test.status.icon = 0
+                test.status.message = ''
             }
 
             // updateTestStatus(index, test.status)
