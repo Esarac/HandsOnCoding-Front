@@ -148,7 +148,7 @@ function TestForm(props: Props) {
                             className={styleCourse.customButton + ' ' + style.buttonSize}
                         >
                             <i className='bi bi-cloud-plus-fill pe-2'></i>
-                            Create
+                            {props.edit ? "Edit" : "Create"}
                         </Button>
                     </Col>
                 </Row>
