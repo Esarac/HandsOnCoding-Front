@@ -1,21 +1,32 @@
 import React, { useState } from 'react'
-import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import styleCourse from 'styles/Course.module.scss'
 import style from './form.module.scss'
-import { postTest } from 'services/courseService'
+import { postTest, putTest } from 'services/courseService'
 import { toast } from 'react-toastify';
+import { Test } from 'models/test'
 
 interface Props {
     stepId: string
     onSave: () => void
     onCancel: () => void
+    edit?: boolean
+    test?: Test
 }
 
 function TestForm(props: Props) {
     const [message, setMessage] = useState<string>('')
     const [input, setInput] = useState<string>('')
     const [output, setOutput] = useState<string>('')
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(false)
+
+    useState(() => {
+        if (props.test) {
+            setMessage(props.test.message)
+            setInput(props.test.input)
+            setOutput(props.test.output)
+        }
+    })
 
     const handleSubmit = (event: { currentTarget: any; preventDefault: () => void; stopPropagation: () => void }) => {
         const form = event.currentTarget;
@@ -24,7 +35,10 @@ function TestForm(props: Props) {
             event.stopPropagation();
         }
         else {
-            save()
+            if (props.edit)
+                edit()
+            else
+                save()
             event.preventDefault()
         }
 
@@ -49,6 +63,28 @@ function TestForm(props: Props) {
                 pending: 'Adding',
                 success: 'Added!',
                 error: "Couldn't add, please try again!"
+            }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+        )
+    }
+
+    const edit = () => {
+        const promise = new Promise((resolve, reject) => {
+            putTest(props.stepId, props.test!.id, { message: message, input: input, output: output })
+                .then(({ data, status }) => {
+                    props.onSave()
+                    resolve('Successfull')
+                })
+                .catch(e => {
+                    console.log(e)
+                    reject('Failed')
+                })
+        });
+        toast.promise(
+            promise,
+            {
+                pending: 'Updating',
+                success: 'Updated!',
+                error: "Couldn't update, please try again!"
             }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
         )
     }
@@ -119,6 +155,10 @@ function TestForm(props: Props) {
             </div>
         </Form>
     )
+}
+
+TestForm.defaultProps = {
+    edit: false
 }
 
 export default TestForm

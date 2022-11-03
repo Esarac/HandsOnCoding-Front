@@ -13,6 +13,7 @@ type Props = {
         message: string
     }
     onDelete: () => void
+    onEdit: (test : Test) => void
 }
 
 interface Icon {
@@ -52,7 +53,7 @@ function TestView(props: Props) {
                     {icons[props.status.icon].icon}
                 </Col>
                 <Col xs='auto'>
-                    {props.test.message}
+                    <a onClick={() => props.onEdit(props.test)} className={style.editText}>{props.test.message}</a>
                 </Col>
                 <Col className='text-truncate'>
                     {props.status.message !== '' && (

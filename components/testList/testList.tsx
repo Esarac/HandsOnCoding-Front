@@ -26,6 +26,7 @@ type Props = {
 function TestList(props: Props) {
     const [tests, setTests] = useState<TestWithStatus[]>(props.tests.map((test) => { return { ...test, status: { icon: 0, message: '' } } }))
     const [showModal, setShowModal] = useState<boolean>(false)
+    const [modal, setModal] = useState<React.ReactNode>(null)
 
     // useEffect(() => { console.log(tests) }, [tests])
 
@@ -103,11 +104,27 @@ function TestList(props: Props) {
                 setTests(res.data.map((test) => { return { ...test, status: { icon: 0, message: '' } } }))
             })
             .catch((e) => console.log(e))
-        setShowModal(false)
+        setModal(null)
     }
 
     const cancel = () => {
-        setShowModal(false)
+        setModal(null)
+    }
+
+    const add = () => {
+        setModal(
+            <Modal show={true} title='New Test' onClose={() => setModal(null)}>
+                <TestForm stepId={props.stepId} onSave={loadItems} onCancel={cancel}></TestForm>
+            </Modal>
+        )
+    }
+
+    const edit = (test: Test) => {
+        setModal(
+            <Modal show={true} title='Edit Test' onClose={() => setModal(null)}>
+                <TestForm stepId={props.stepId} onSave={loadItems} onCancel={cancel} edit={true} test={test}></TestForm>
+            </Modal>
+        )
     }
 
     return (
@@ -123,18 +140,16 @@ function TestList(props: Props) {
                 {tests.map((test, index) => {
                     const { status, ...actTest } = test
                     return (
-                        <TestView key={index} test={actTest} status={status} onDelete={() => { deleteItem(test.id) }}></TestView>
+                        <TestView key={index} test={actTest} status={status} onDelete={() => { deleteItem(test.id) }} onEdit={edit}></TestView>
                     )
                 })}
             </Stack>
             <div className={style.container}>
-                <button className={style.customButton} onClick={() => setShowModal(true)}>
+                <button className={style.customButton} onClick={() => add()}>
                     <i className={'bi bi-plus'}></i>
                 </button>
             </div>
-            <Modal show={showModal} title='New Test' onClose={() => setShowModal(false)}>
-                <TestForm stepId={props.stepId} onSave={loadItems} onCancel={cancel}></TestForm>
-            </Modal>
+            {modal}
         </div>
     )
 }

@@ -149,8 +149,8 @@ export const postTest = async (stepId: string, test: TestRawDTO) => {
     return { data, status }
 }
 
-export const putTest = async (stepId: string, testId: string, test: Test) => {
-    const { data, status } = await axios.put<File>(`${STEP_BASE_URL}/${stepId}/tests/${testId}`, test)
+export const putTest = async (stepId: string, testId: string, test: TestRawDTO) => {
+    const { data, status } = await axios.put<Test>(`${STEP_BASE_URL}/${stepId}/tests/${testId}`, test)
 
     return { data, status }
 }
