@@ -24,7 +24,9 @@ type Props = {
     /**
      * @param {React.ReactElement<typeof Button>} - An ReactElement representing the save button (optional).
      */
-    saveBtn?: React.ReactElement<typeof Button>;
+    onSave: () => void
+
+    disableSaveBtn: boolean
 
     onChange?: (data: string) => void;
 }
@@ -36,6 +38,7 @@ export default function Ide(props: Props) {
     //States
     const [code, setCode] = useState(props.value)
     const [consoleInput, setConsoleInput] = useState<string[]>([])
+    const [disableRunBtn, setDisableRunBtn] = useState<boolean>(false)
 
     useEffect(() => {
         if (props.onChange)
@@ -45,47 +48,58 @@ export default function Ide(props: Props) {
     //References
     const consoleRef = useRef<ConsoleHandle>(null)
 
+    const run = () => {
+        setDisableRunBtn(true)
+        const input = consoleInput.join('\n')
+        const promise = new Promise((resolve, reject) => postCode({ language: props.language, code, input })
+            .then(({ data, status }) => {
+                const { code, msg } = data
+
+                let color = LOG_COLORS.timeout
+                switch (code) {
+                    case 21:
+                        color = LOG_COLORS.error
+                        break
+                    case 10:
+                        color = LOG_COLORS.success
+                        break
+                }
+
+                const logOutput: LogItem = { type: 'output', color, content: msg }
+                consoleRef.current?.addCodeOutput(logOutput)
+                setDisableRunBtn(false)
+                resolve('Successfull')
+            })
+            .catch((e) => {
+                console.log(e)
+                setDisableRunBtn(false)
+                reject('Failed')
+            }));
+        toast.promise(
+            promise,
+            {
+                pending: 'Running',
+                error: 'Execution error, please try again!'
+            }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+        )
+    }
+
     return (
         <>
             <Row className='align-items-center'>
                 <Col xs='auto'>
-                    {props.saveBtn}
+                    <button className={style.customButton + ' ' + style.saveBtn}
+                        onClick={() => props.onSave()}
+                        disabled={props.disableSaveBtn}>
+                        <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
+                        Save
+                    </button>
                 </Col>
                 <Col xs='auto'>
                     <button className={style.customButton}
                         data-cy='runBtn'
-                        onClick={(e) => {
-                            const input = consoleInput.join('\n')
-                            const promise = new Promise((resolve, reject) => postCode({ language: props.language, code, input })
-                                .then(({ data, status }) => {
-                                    const { code, msg } = data
-
-                                    let color = LOG_COLORS.timeout
-                                    switch (code) {
-                                        case 21:
-                                            color = LOG_COLORS.error
-                                            break
-                                        case 10:
-                                            color = LOG_COLORS.success
-                                            break
-                                    }
-
-                                    const logOutput: LogItem = { type: 'output', color, content: msg }
-                                    consoleRef.current?.addCodeOutput(logOutput)
-                                    resolve('Successfull')
-                                })
-                                .catch((e) => {
-                                    console.log(e)
-                                    reject('Failed')
-                                }));
-                            toast.promise(
-                                promise,
-                                {
-                                    pending: 'Running',
-                                    error: 'Execution error, please try again!'
-                                }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
-                            )
-                        }}>
+                        onClick={(e) => run()}
+                        disabled={disableRunBtn}>
                         <i className={style.icon + ' bi bi-caret-right-fill'}></i>
                         Run
                     </button>
