@@ -21,6 +21,7 @@ export default function Step(props: Props) {
     const [codeSolution, setCodeSolution] = useState<string>(props.step.solution?.content as string)
     const [disableSaveBtnTemplate, setDisableSaveBtnTemplate] = useState<boolean>(false)
     const [disableSaveBtnSolution, setDisableSaveBtnSolution] = useState<boolean>(false)
+    const [disableSaveBtnDescription, setDisableSaveBtnDescription] = useState<boolean>(false)
 
 
     const saveTemplate = () => {
@@ -83,14 +84,17 @@ export default function Step(props: Props) {
     }
 
     const saveDescription = (description: string) => {
+        setDisableSaveBtnDescription(true)
         const promise = new Promise((resolve, reject) => {
             putStep(props.step.id, { description, lessonId: props.step.lessonId })
                 .then(v => {
                     console.log(v)
+                    setDisableSaveBtnDescription(false)
                     resolve('Successfull')
                 })
                 .catch(e => {
                     console.log(e)
+                    setDisableSaveBtnDescription(false)
                     reject('Failed')
                 })
         });
@@ -108,7 +112,7 @@ export default function Step(props: Props) {
         name: 'Description',
         content: (
             <div data-cy='description'>
-                <MarkdownEditor text={props.step.description} save={saveDescription}></MarkdownEditor>
+                <MarkdownEditor text={props.step.description} save={saveDescription} disable={disableSaveBtnDescription}></MarkdownEditor>
             </div>
         )
     }

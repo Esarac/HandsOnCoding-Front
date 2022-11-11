@@ -28,13 +28,15 @@ type Props = {
      * @param {arrow function} - A function that handles saving the text.
      */
    save: (element: any) => void
+
+   disable: boolean
 }
 
 export default function MarkdownEditor(props: Props) {
   const [value, setValue] = useState<string>(props.text as string);
   return (
     <div>
-      <button className={style.customButton} onClick={() => props.save(value)}>
+      <button className={style.customButton} onClick={() => props.save(value)} disabled={props.disable}>
         <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
         Save
       </button>

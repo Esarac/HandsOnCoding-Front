@@ -23,6 +23,8 @@ type Props = {
      * @param {arrow function} - A function that handles a tab creating (optional).
      */
     create?: () => void
+
+    disable?: boolean
 }
 
 /**
@@ -111,7 +113,7 @@ export default function CustomTab(props: Props) {
                         </Tab>
                     )))}
                 {props.removeable &&
-                    <Button data-cy={`tab-add`} className={style.addButton + " bi bi-plus"} onClick={props.create}>
+                    <Button data-cy={`tab-add`} className={style.addButton + " bi bi-plus"} onClick={props.create} disabled={props.disable}>
                     </Button>}
             </TabList>
             {props.tabs.map((tab, index) => (

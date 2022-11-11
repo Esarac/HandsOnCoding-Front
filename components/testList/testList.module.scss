@@ -26,6 +26,14 @@
     color: theme.$blue-color;
 }
 
+.customButton:disabled {
+    opacity: 0.2;
+    outline: none;
+    border: 0px solid;
+    pointer-events: none;
+    color:white;
+}
+
 .icon {
     padding-right: 13px;
 }

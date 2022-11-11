@@ -52,6 +52,15 @@
     color: theme.$blue-color;
 }
 
+.addButton:disabled {
+    opacity: 0.2;
+    outline: none;
+    border: 0px solid;
+    pointer-events: none;
+    color:white;
+    background-color: theme.$background-2;
+}
+
 .tab {
     display: inline-block;
     border: 1px solid transparent;

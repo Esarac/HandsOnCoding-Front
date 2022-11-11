@@ -23,6 +23,7 @@ export default function LessonPage(props: Props) {
     const [steps, setSteps] = useState(props.steps)
     const [updated, setUpdated] = useState(false)
     const [alert, setAlert] = useState<React.ReactNode>(null)
+    const [disableAddStepBtn, setdisableAddStepBtn] = useState<boolean>(false)
 
     const deleteTab = (step: StepNested): void => {
         setAlert(
@@ -66,15 +67,18 @@ export default function LessonPage(props: Props) {
     }
 
     const addStep = () => {
+        setdisableAddStepBtn(true)
         var step: StepDTO = { lessonId: props.id, description: '' }
         const promise = new Promise((resolve, reject) => {
             postStep(step)
                 .then(res => {
                     update()
+                    setdisableAddStepBtn(false)
                     resolve('Successfull')
                 })
                 .catch(err => {
                     console.log(err)
+                    setdisableAddStepBtn(false)
                     reject('Failed')
                 })
         });
@@ -135,6 +139,7 @@ export default function LessonPage(props: Props) {
                     </div>)}
                 removeable={true}
                 create={addStep}
+                disable={disableAddStepBtn}
             ></CustomTab>
             <>
                 {alert}
