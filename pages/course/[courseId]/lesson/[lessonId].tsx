@@ -6,13 +6,11 @@ import { StepNested, StepDTO } from 'models/step'
 import { deleteStep, getStep, postStep, getLesson, getLessons, getCourse, getCourseDefault } from 'services/courseService'
 import CustomTab from 'components/tab/customTab'
 import Step from 'components/step/step'
-import styles from '../../../../styles/lesson.module.scss'
 import Head from 'next/head'
 import Link from 'next/link'
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Breadcrumb } from 'react-bootstrap'
 
 //Component
 interface Props extends LessonFull {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Editor from '@monaco-editor/react'
 import Console, { ConsoleHandle, LogItem } from './console'
-import { postCode } from '../../services/fetchCompiler'
+import { postCode } from 'services/fetchCompiler'
 import style from './ide.module.scss'
 import { Button } from 'react-bootstrap';
 import LOG_COLORS from './logcolors.json'
