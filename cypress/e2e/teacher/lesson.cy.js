@@ -11,6 +11,7 @@ class LessonPage {
     }
 
     getSectionTab(step, section) {
+        this.getStepTab(step).click()
         const tabs = {
             'description': { side: 'left', index: 0 },
             'test': { side: 'left', index: 1 },
@@ -25,25 +26,36 @@ class LessonPage {
         return cy.get(`[data-cy="tab-add"]`)
     }
 
+    getStepDeleteBtn(step){
+        this.getStepTab(step).click()
+        cy.get(`[data-cy="tab-${step}-contextMenu"] .tab_icon__m3FYt`).click()
+        return cy.get('.tab_item__S7WJH')
+    }
+
     getSaveButton(step, section) {
-        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="ide"] [data-cy="saveBtn"]`)
+        this.getSectionTab(step, section).click()
+        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="saveBtn"]`)
     }
 
     getRunButton(step, section) {
-        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="ide"] [data-cy="runBtn"]`)
+        this.getSectionTab(step, section).click()
+        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="runBtn"]`)
     }
 
     //Lines
     getMonacoEditor(step, section) {
-        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="ide"] [data-cy="editor"] .view-line`).eq(0)
+        this.getSectionTab(step, section).click()
+        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="editor"] .view-line`).eq(0)
     }
 
     getConsoleInput(step, section) {
-        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="ide"] [data-cy="console"] [data-cy="input"]`)
+        this.getSectionTab(step, section).click()
+        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="console"] [data-cy="input"]`)
     }
 
     getConsoleLog(step, section, index) {
-        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="ide"] [data-cy="console"] [data-cy="log-${index}"]`)
+        this.getSectionTab(step, section).click()
+        return cy.get(`[data-cy="step-${step}"] [data-cy="${section}"] [data-cy="console"] [data-cy="log-${index}"]`)
     }
 }
 
@@ -67,24 +79,21 @@ const setUpScene = (name) => {
 describe('Lesson screen', () => {
     context('As a teacher I want to set a template for the step so that I can define a starting point for my students', () => {
         it('Create template', () => {
-            setUpScene('scene1')
+            setUpScene('lessonEmptyStep')
 
-            page.getSectionTab(0, 'template').click()
-            page.getMonacoEditor(0, 'template').type('print("Hello!")')
+            page.getMonacoEditor(0, 'template').type("print('Hello!')")
             page.getSaveButton(0, 'template').click()
 
             cy.wait(1000)
             cy.reload()
             cy.wait(1000)
 
-            page.getSectionTab(0, 'template').click()
-            page.getMonacoEditor(0, 'template').should('have.text', 'print("Hello!")')
+            page.getMonacoEditor(0, 'template').should('have.text', "print('Hello!')")
         })
 
         it('Update template', () => {
-            setUpScene('scene2')
+            setUpScene('lessonDefault')
 
-            page.getSectionTab(0, 'template').click()
             page.getMonacoEditor(0, 'template').type('{moveToEnd}!')
             page.getSaveButton(0, 'template').click()
 
@@ -92,46 +101,41 @@ describe('Lesson screen', () => {
             cy.reload()
             cy.wait(1000)
 
-            page.getSectionTab(0, 'template').click()
-            page.getMonacoEditor(0, 'template').should('have.text', 'print("Hello")!')
+            page.getMonacoEditor(0, 'template').should('have.text', "print('Hello!')!")
         })
     })
 
     context('As a teacher I want to set a possible solution for the step so that if my students have no clue of how to resolve the exercise, they can see how the teacher solved it', () => {
         it('Create solution', () => {
-            setUpScene('scene1')
+            setUpScene('lessonEmptyStep')
 
-            page.getSectionTab(0, 'solution').click()
-            page.getMonacoEditor(0, 'solution').type('print("Hello!")')
+            page.getMonacoEditor(0, 'solution').type("print(input())")
             page.getSaveButton(0, 'solution').click()
 
             cy.wait(1000)
             cy.reload()
             cy.wait(1000)
 
-            page.getSectionTab(0, 'solution').click()
-            page.getMonacoEditor(0, 'solution').should('have.text', 'print("Hello!")')
+            page.getMonacoEditor(0, 'solution').should('have.text', "print(input())")
         })
 
         it('Update solution', () => {
-            setUpScene('scene2')
+            setUpScene('lessonDefault')
 
-            page.getSectionTab(0, 'solution').click()
-            page.getMonacoEditor(0, 'solution').type('{moveToEnd}!')
-            page.getSaveButton(0, 'solution').click()
+            page.getMonacoEditor(1, 'solution').type('{moveToEnd}!')
+            page.getSaveButton(1, 'solution').click()
 
             cy.wait(1000)
             cy.reload()
             cy.wait(1000)
 
-            page.getSectionTab(0, 'solution').click()
-            page.getMonacoEditor(0, 'solution').should('have.text', 'print("Hello")!')
+            page.getMonacoEditor(1, 'solution').should('have.text', "print(input())!")
         })
     })
 
     context('As a user, I want to be able to run my Python code in the app, so that I can solve my assignments', () => {
         before(() => {
-            setUpScene('scene1')
+            setUpScene('lessonEmptyStep')
         })
 
         beforeEach(() => {
@@ -174,7 +178,7 @@ describe('Lesson screen', () => {
             })
         })
 
-        context.only('As a user, I want to submit my inputs, so that I can interact with the code Ive written', () => {
+        context('As a user, I want to submit my inputs, so that I can interact with the code Ive written', () => {
             it('Single input', ()=>{
                 page.getSectionTab(0, 'template', 0).click()
                 page.getMonacoEditor(0, 'template').addLines(2)
@@ -294,10 +298,10 @@ describe('Lesson screen', () => {
         })
     })
 
-    context.only('As a teacher, I want to view all the steps in my assignment, so that I can interact with them', () => {
-        context('As a teacher I want to create a step so that my students can learn how to code with small guided instructions', () => {
-            it('Create', () => {
-                setUpScene('lesson0Steps')
+    context('As a teacher, I want to view all the steps in my assignment, so that I can interact with them', () => {
+        context('As a teacher I want to create a step so that my students can learn how to code with small guided instructions', () => {          
+            it('Create step', () => {
+                setUpScene('lessonNoSteps')
 
                 page.getStepCreateBtn().click()
                 page.getStepTab(0).should('be.visible');
@@ -312,12 +316,10 @@ describe('Lesson screen', () => {
         })
 
         context('As a teacher I want to delete a step so that is no longer needed', ()=>{
-            it('Delete', ()=>{
-                setUpScene('scene1')
+            it('Delete step', ()=>{
+                setUpScene('lessonEmptyStep')
 
-                cy.get('.tab_icon__m3FYt').click()//Page object!
-
-                cy.contains('Delete').click()//Page object!
+                page.getStepDeleteBtn(0).click()
                 cy.wait(1000)
                 cy.get('.btn-danger').click()//Page object!
 
@@ -328,20 +330,55 @@ describe('Lesson screen', () => {
                 page.getStepTab(0).should('not.exist')
             })
 
-            it('Delete nested', ()=>{
-                setUpScene('scene2')
+            it('Delete step canceled', ()=>{
+                setUpScene('lessonEmptyStep')
 
-                cy.get('.tab_icon__m3FYt').click()//Page object!
-                
-                cy.contains('Delete').click()//Page object!
+                page.getStepDeleteBtn(0).click()
                 cy.wait(1000)
-                cy.get('.btn-danger').click()//Page object!
+                cy.contains('Cancel').click()//Page object!
 
-                page.getStepTab(0).should('not.exist')
+                page.getStepTab(0).should('exist')
 
                 cy.reload()
 
-                page.getStepTab(0).should('not.exist')
+                page.getStepTab(0).should('exist')
+            })
+
+            it('Delete nested step', ()=>{
+                setUpScene('lessonDefault')
+
+                page.getStepDeleteBtn(2).click()
+                cy.wait(1000)
+                cy.get('.btn-danger').click()//Page object!
+
+                page.getStepTab(2).should('not.exist')
+
+                cy.reload()
+
+                page.getStepTab(2).should('not.exist')
+            })
+
+            it('Delete multiple steps', ()=>{
+                setUpScene('lessonDefault')
+
+                page.getStepDeleteBtn(0).click()
+                cy.wait(1000)
+                cy.get('.btn-danger').click()//Page object!
+
+                page.getStepTab(2).should('not.exist')
+
+                page.getStepDeleteBtn(0).click()
+                cy.wait(1000)
+                cy.get('.btn-danger').click()//Page object!
+
+                page.getStepTab(1).should('not.exist')
+
+                cy.reload()
+
+                page.getStepTab(0).should('exist')
+                page.getStepTab(1).should('not.exist')
+
+                page.getMonacoEditor(0, 'template').should('have.text', 'print(input())')
             })
         })
     })

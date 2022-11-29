@@ -1,0 +1,114 @@
+{
+    "languages":[
+        {
+            "name":"python",
+            "extension":"py",
+            "logo":""
+        },
+        {
+            "name":"cpp",
+            "extension":"cpp",
+            "logo":"(experimental)"
+        },
+        {
+            "name":"javascript",
+            "extension":"js",
+            "logo":"(experimental)"
+        }
+    ],
+    "courses":[
+        {
+            "title":"APO 1",
+            "description":"El primer curso de programacion.",
+            "resources":[],
+            "lessons":[
+                {
+                    "title":"Prints",
+                    "languageName":"python",
+                    "steps":[
+                        {
+                            "description": "# Step 1\n\nPrint \"Hello World!\"\n\n## Some tips:\n* To print a given string use the function:\n    ```python\n    print('your string')\n    ```\n* Remember the capital letters!",
+                            "template": {
+                                "name": "main.py",
+                                "content": "print('Hello!')",
+                                "updatedAt": "2022-11-02T19:02:33.981Z"
+                            },
+                            "solution": {
+                                "name": "main.py",
+                                "content": "print('Hello World!')",
+                                "updatedAt": "2022-11-02T19:02:43.256Z"
+                            },
+                            "tests": [
+                                {
+                                    "message": "Hello World!",
+                                    "input": " ",
+                                    "output": "Hello World!\n"
+                                }
+                            ]
+                        },
+                        {
+                            "description": "# Step 2\n\nPrint back a given input.\n\n## Some tips:\n* To receive an input from the console use the function:\n    ```python\n    input()\n    ```",
+                            "template": {
+                                "name": "main.py",
+                                "content": "print(\"Your input\")",
+                                "updatedAt": "2022-11-02T19:04:57.536Z"
+                            },
+                            "solution": {
+                                "name": "main.py",
+                                "content": "print(input())",
+                                "updatedAt": "2022-11-02T19:04:56.221Z"
+                            },
+                            "tests": [
+                                {
+                                    "message": "Esteban",
+                                    "input": "esteban",
+                                    "output": "esteban\n"
+                                },
+                                {
+                                    "message": "Isabella",
+                                    "input": "isabella",
+                                    "output": "isabella\n"
+                                },
+                                {
+                                    "message": "Samuel",
+                                    "input": "samuel",
+                                    "output": "samuel\n"
+                                }
+                            ]
+                        },
+                        {
+                            "description": "# Step 3\n\nPrint each letter of an input string in a new line.\n\n## Some tips:\n* To loop throw the chars of a given string you can use a for\n    ```python\n    for char in string:\n        # your code\n    ```",
+                            "template": {
+                                "name": "main.py",
+                                "content": "print(input())",
+                                "updatedAt": "2022-11-02T19:03:57.544Z"
+                            },
+                            "solution": {
+                                "name": "main.py",
+                                "content": "for l in input():\r\n    print(l)",
+                                "updatedAt": "2022-11-02T19:04:06.517Z"
+                            },
+                            "tests": [
+                                {
+                                    "message": "Esteban",
+                                    "input": "esteban",
+                                    "output": "e\ns\nt\ne\nb\na\nn\n"
+                                },
+                                {
+                                    "message": "Samuel",
+                                    "input": "samuel",
+                                    "output": "s\na\nm\nu\ne\nl\n"
+                                },
+                                {
+                                    "message": "Isabella",
+                                    "input": "isabella",
+                                    "output": "i\ns\na\nb\ne\nl\nl\na\n"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

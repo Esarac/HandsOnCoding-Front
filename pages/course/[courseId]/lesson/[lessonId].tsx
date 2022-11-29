@@ -111,8 +111,12 @@ export default function LessonPage(props: Props) {
                         name: 'Step ' + (index + 1),
                         content: (
                             <div data-cy={`step-${index}`}>
-                                <Step step={step} languageName={props.languageName}></Step>
+                                <Step
+                                    step={step}
+                                    languageName={props.languageName}
+                                />
                             </div>
+                            
                         ),
                         delete: () => deleteTab(step)
                     }
@@ -168,7 +172,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     const lessonNested: LessonFull = await getLessonNested(lessonId)
 
-    const {data: course} = await getCourseDefault(lessonNested.courseId)
+    const { data: course } = await getCourseDefault(lessonNested.courseId)
 
     return {
         props: {

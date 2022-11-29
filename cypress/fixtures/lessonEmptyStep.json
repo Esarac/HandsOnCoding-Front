@@ -1,0 +1,38 @@
+{
+    "languages":[
+        {
+            "name":"python",
+            "extension":"py",
+            "logo":""
+        },
+        {
+            "name":"cpp",
+            "extension":"cpp",
+            "logo":"(experimental)"
+        },
+        {
+            "name":"javascript",
+            "extension":"js",
+            "logo":"(experimental)"
+        }
+    ],
+    "courses":[
+        {
+            "title":"APO 1",
+            "description":"El primer curso de programacion.",
+            "resources":[],
+            "lessons":[
+                {
+                    "title":"Prints",
+                    "languageName":"python",
+                    "steps":[
+                        {
+                            "description": "",
+                            "tests": []
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
