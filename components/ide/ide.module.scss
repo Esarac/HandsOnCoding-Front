@@ -167,6 +167,18 @@ $text-color: #D4D4D4;
     color: theme.$blue-color;
 }
 
+.customButton:disabled {
+    opacity: 0.2;
+    outline: none;
+    border: 0px solid;
+    pointer-events: none;
+    color:white;
+}
+
+.saveBtn {
+    margin-left: 15px;
+}
+
 .icon {
     padding-right: 13px;
  }

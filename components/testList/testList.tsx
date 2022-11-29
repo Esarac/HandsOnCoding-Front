@@ -25,12 +25,13 @@ type Props = {
 
 function TestList(props: Props) {
     const [tests, setTests] = useState<TestWithStatus[]>(props.tests.map((test) => { return { ...test, status: { icon: 0, message: '' } } }))
-    const [showModal, setShowModal] = useState<boolean>(false)
     const [modal, setModal] = useState<React.ReactNode>(null)
+    const [disableRunBtn, setDisableRunBtn] = useState<boolean>(false)
 
     // useEffect(() => { console.log(tests) }, [tests])
 
     const runAllTest = async () => {
+        setDisableRunBtn(true)
         setTests(tests.map((test) => { return { ...test, status: { icon: 1, message: 'loading...' } } }))
 
         // await new Promise(resolve => setTimeout(resolve, 1000))
@@ -62,6 +63,7 @@ function TestList(props: Props) {
                 test.status.icon = 0
                 test.status.message = ''
             }
+            setDisableRunBtn(false)
 
             // updateTestStatus(index, test.status)
             return test
@@ -132,9 +134,10 @@ function TestList(props: Props) {
             <button
                 className={style.customButton}
                 onClick={runAllTest}
+                disabled={disableRunBtn}
             >
                 <i className={style.icon + ' bi bi-caret-right-fill'}></i>
-                Runer
+                Run
             </button>
             <Stack gap={2}>
                 {tests.map((test, index) => {

@@ -19,87 +19,82 @@ type Props = {
 export default function Step(props: Props) {
     const [codeTemplate, setCodeTemplate] = useState<string>(props.step.template?.content as string)
     const [codeSolution, setCodeSolution] = useState<string>(props.step.solution?.content as string)
+    const [disableSaveBtnTemplate, setDisableSaveBtnTemplate] = useState<boolean>(false)
+    const [disableSaveBtnSolution, setDisableSaveBtnSolution] = useState<boolean>(false)
+    const [disableSaveBtnDescription, setDisableSaveBtnDescription] = useState<boolean>(false)
 
-    const saveBtnTemplate = (
-        <button className={style.customButton}
-            data-cy='saveBtn'
-            onClick={(e) => {
-                const template: FileRawDTO = {
-                    name: (typeof props.step.template?.name === 'undefined') ? 'main.py' : props.step.template?.name,
-                    content: codeTemplate
-                }
-                const promise = new Promise((resolve, reject) => {
-                    postTemplate(props.step.id, template)
-                        .then(v => {
-                            console.log(v)
-                            resolve('Successfull')
-                        })
-                        .catch(e => {
-                            console.log(e)
-                            reject('Failed')
-                        })
-                });
-                toast.promise(
-                    promise,
-                    {
-                        pending: 'Saving',
-                        success: 'Saved!',
-                        error: "Couldn't save, please try again!"
-                    }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
-                )
-            }}
 
-        >
-            <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
-            Save
-        </button>
-    )
-
-    const saveBtnSolution = (
-        <button className={style.customButton}
-            data-cy='saveBtn'
-            onClick={(e) => {
-                const solution: FileRawDTO = {
-                    name: (typeof props.step.solution?.name === 'undefined') ? 'main.py' : props.step.solution?.name,
-                    content: codeSolution,
-                }
-
-                const promise = new Promise((resolve, reject) => {
-                    postSolution(props.step.id, solution)
-                        .then(v => {
-                            console.log(v)
-                            resolve('Successfull')
-                        })
-                        .catch(e => {
-                            console.log(e)
-                            reject('Failed')
-                        })
-                });
-                toast.promise(
-                    promise,
-                    {
-                        pending: 'Saving',
-                        success: 'Saved!',
-                        error: "Couldn't save, please try again!"
-                    }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
-                )
-            }}
-
-        >
-            <i className={style.icon + ' bi bi-file-earmark-code-fill'}></i>
-            Save
-        </button>
-    )
-
-    const saveDescription = (description: string) => {
+    const saveTemplate = () => {
+        setDisableSaveBtnTemplate(true)
+        const template: FileRawDTO = {
+            name: (typeof props.step.template?.name === 'undefined') ? 'main.py' : props.step.template?.name,
+            content: codeTemplate
+        }
         const promise = new Promise((resolve, reject) => {
-            putStep(props.step.id, { description, lessonId: props.step.lessonId })
+            postTemplate(props.step.id, template)
                 .then(v => {
                     console.log(v)
+                    setDisableSaveBtnTemplate(false)
                     resolve('Successfull')
                 })
                 .catch(e => {
                     console.log(e)
+                    setDisableSaveBtnTemplate(false)
+                    reject('Failed')
+                })
+        });
+        toast.promise(
+            promise,
+            {
+                pending: 'Saving',
+                success: 'Saved!',
+                error: "Couldn't save, please try again!"
+            }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+        )
+    }
+
+    const saveSolution = () => {
+        setDisableSaveBtnSolution(true)
+        const solution: FileRawDTO = {
+            name: (typeof props.step.solution?.name === 'undefined') ? 'main.py' : props.step.solution?.name,
+            content: codeSolution,
+        }
+
+        const promise = new Promise((resolve, reject) => {
+            postSolution(props.step.id, solution)
+                .then(v => {
+                    console.log(v)
+                    setDisableSaveBtnSolution(false)
+                    resolve('Successfull')
+                })
+                .catch(e => {
+                    console.log(e)
+                    setDisableSaveBtnSolution(false)
+                    reject('Failed')
+                })
+        });
+        toast.promise(
+            promise,
+            {
+                pending: 'Saving',
+                success: 'Saved!',
+                error: "Couldn't save, please try again!"
+            }, { position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500 }
+        )
+    }
+
+    const saveDescription = (description: string) => {
+        setDisableSaveBtnDescription(true)
+        const promise = new Promise((resolve, reject) => {
+            putStep(props.step.id, { description, lessonId: props.step.lessonId })
+                .then(v => {
+                    console.log(v)
+                    setDisableSaveBtnDescription(false)
+                    resolve('Successfull')
+                })
+                .catch(e => {
+                    console.log(e)
+                    setDisableSaveBtnDescription(false)
                     reject('Failed')
                 })
         });
@@ -117,7 +112,7 @@ export default function Step(props: Props) {
         name: 'Description',
         content: (
             <div data-cy='description'>
-                <MarkdownEditor text={props.step.description} save={saveDescription}></MarkdownEditor>
+                <MarkdownEditor text={props.step.description} save={saveDescription} disable={disableSaveBtnDescription}></MarkdownEditor>
             </div>
         )
     }
@@ -138,7 +133,8 @@ export default function Step(props: Props) {
                 <Ide
                     onChange={setCodeTemplate}
                     language={props.languageName}
-                    saveBtn={saveBtnTemplate}
+                    onSave={saveTemplate}
+                    disableSaveBtn={disableSaveBtnTemplate}
                     value={props.step.template?.content as string} />
             </div>
         )
@@ -151,7 +147,8 @@ export default function Step(props: Props) {
                 <Ide
                     onChange={setCodeSolution}
                     language={props.languageName}
-                    saveBtn={saveBtnSolution}
+                    onSave={saveSolution}
+                    disableSaveBtn={disableSaveBtnSolution}
                     value={props.step.solution?.content as string}
                 />
             </div>
